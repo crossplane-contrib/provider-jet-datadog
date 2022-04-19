@@ -1,0 +1,408 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
+  name: monitors.datadog.datadog.jet.crossplane.io
+spec:
+  group: datadog.datadog.jet.crossplane.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - datadogjet
+    kind: Monitor
+    listKind: MonitorList
+    plural: monitors
+    singular: monitor
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Monitor is the Schema for the Monitors API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: MonitorSpec defines the desired state of Monitor
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource.
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  enableLogsSample:
+                    description: A boolean indicating whether or not to include a
+                      list of log values which triggered the alert. This is only used
+                      by log monitors. Defaults to `false`.
+                    type: boolean
+                  escalationMessage:
+                    description: A message to include with a re-notification. Supports
+                      the `@username` notification allowed elsewhere.
+                    type: string
+                  evaluationDelay:
+                    description: "(Only applies to metric alert) Time (in seconds)
+                      to delay evaluation, as a non-negative integer. \n For example,
+                      if the value is set to `300` (5min), the `timeframe` is set
+                      to `last_5m` and the time is 7:00, the monitor will evaluate
+                      data from 6:50 to 6:55. This is useful for AWS CloudWatch and
+                      other backfilled metrics to ensure the monitor will always have
+                      data during evaluation."
+                    type: number
+                  forceDelete:
+                    description: A boolean indicating whether this monitor can be
+                      deleted even if it’s referenced by other resources (e.g. SLO,
+                      composite monitor).
+                    type: boolean
+                  groupbySimpleMonitor:
+                    description: Whether or not to trigger one alert if any source
+                      breaches a threshold. This is only used by log monitors. Defaults
+                      to `false`.
+                    type: boolean
+                  includeTags:
+                    description: A boolean indicating whether notifications from this
+                      monitor automatically insert its triggering tags into the title.
+                      Defaults to `true`.
+                    type: boolean
+                  locked:
+                    description: A boolean indicating whether changes to this monitor
+                      should be restricted to the creator or admins. Defaults to `false`.
+                    type: boolean
+                  message:
+                    description: "A message to include with notifications for this
+                      monitor. \n Email notifications can be sent to specific users
+                      by using the same `@username` notation as events."
+                    type: string
+                  monitorThresholdWindows:
+                    description: A mapping containing `recovery_window` and `trigger_window`
+                      values, e.g. `last_15m` . Can only be used for, and are required
+                      for, anomaly monitors.
+                    items:
+                      properties:
+                        recoveryWindow:
+                          description: Describes how long an anomalous metric must
+                            be normal before the alert recovers.
+                          type: string
+                        triggerWindow:
+                          description: Describes how long a metric must be anomalous
+                            before an alert triggers.
+                          type: string
+                      type: object
+                    type: array
+                  monitorThresholds:
+                    description: Alert thresholds of the monitor.
+                    items:
+                      properties:
+                        critical:
+                          description: The monitor `CRITICAL` threshold. Must be a
+                            number.
+                          type: string
+                        criticalRecovery:
+                          description: The monitor `CRITICAL` recovery threshold.
+                            Must be a number.
+                          type: string
+                        ok:
+                          description: The monitor `OK` threshold. Must be a number.
+                          type: string
+                        unknown:
+                          description: The monitor `UNKNOWN` threshold. Must be a
+                            number.
+                          type: string
+                        warning:
+                          description: The monitor `WARNING` threshold. Must be a
+                            number.
+                          type: string
+                        warningRecovery:
+                          description: The monitor `WARNING` recovery threshold. Must
+                            be a number.
+                          type: string
+                      type: object
+                    type: array
+                  newGroupDelay:
+                    description: "The time (in seconds) to skip evaluations for new
+                      groups. \n `new_group_delay` overrides `new_host_delay` if it
+                      is set to a nonzero value."
+                    type: number
+                  newHostDelay:
+                    description: '**Deprecated**. See `new_group_delay`. Time (in
+                      seconds) to allow a host to boot and applications to fully start
+                      before starting the evaluation of monitor results. Should be
+                      a non-negative integer. This value is ignored for simple monitors
+                      and monitors not grouped by host. Defaults to `300`. The only
+                      case when this should be used is to override the default and
+                      set `new_host_delay` to zero for monitors grouped by host. **Deprecated.**
+                      Use `new_group_delay` except when setting `new_host_delay` to
+                      zero.'
+                    type: number
+                  noDataTimeframe:
+                    description: "The number of minutes before a monitor will notify
+                      when data stops reporting. Provider defaults to 10 minutes.
+                      \n We recommend at least 2x the monitor timeframe for metric
+                      alerts or 2 minutes for service checks."
+                    type: number
+                  notifyAudit:
+                    description: A boolean indicating whether tagged users will be
+                      notified on changes to this monitor. Defaults to `false`.
+                    type: boolean
+                  notifyNoData:
+                    description: A boolean indicating whether this monitor will notify
+                      when data stops reporting. Defaults to `false`.
+                    type: boolean
+                  priority:
+                    description: Integer from 1 (high) to 5 (low) indicating alert
+                      severity.
+                    type: number
+                  query:
+                    description: "The monitor query to notify on. Note this is not
+                      the same query you see in the UI and the syntax is different
+                      depending on the monitor type, please see the [API Reference](https://docs.datadoghq.com/api/v1/monitors/#create-a-monitor)
+                      for details. `terraform plan` will validate query contents unless
+                      `validate` is set to `false`. \n **Note:** APM latency data
+                      is now available as Distribution Metrics. Existing monitors
+                      have been migrated automatically but all terraformed monitors
+                      can still use the existing metrics. We strongly recommend updating
+                      monitor definitions to query the new metrics. To learn more,
+                      or to see examples of how to update your terraform definitions
+                      to utilize the new distribution metrics, see the [detailed doc](https://docs.datadoghq.com/tracing/guide/ddsketch_trace_metrics/)."
+                    type: string
+                  renotifyInterval:
+                    description: The number of minutes after the last notification
+                      before a monitor will re-notify on the current status. It will
+                      only re-notify if it's not resolved.
+                    type: number
+                  renotifyOccurrences:
+                    description: The number of re-notification messages that should
+                      be sent on the current status.
+                    type: number
+                  renotifyStatuses:
+                    description: The types of statuses for which re-notification messages
+                      should be sent. Valid values are `alert`, `warn`, `no data`.
+                    items:
+                      type: string
+                    type: array
+                  requireFullWindow:
+                    description: "A boolean indicating whether this monitor needs
+                      a full window of data before it's evaluated. \n We highly recommend
+                      you set this to `false` for sparse metrics, otherwise some evaluations
+                      will be skipped. Default: `true` for `on average`, `at all times`
+                      and `in total` aggregation. `false` otherwise."
+                    type: boolean
+                  restrictedRoles:
+                    items:
+                      type: string
+                    type: array
+                  tags:
+                    description: 'A list of tags to associate with your monitor. This
+                      can help you categorize and filter monitors in the manage monitors
+                      page of the UI. Note: it''s not currently possible to filter
+                      by these tags when querying via the API'
+                    items:
+                      type: string
+                    type: array
+                  timeoutH:
+                    description: The number of hours of the monitor not reporting
+                      data before it will automatically resolve from a triggered state.
+                    type: number
+                  type:
+                    description: 'The type of the monitor. The mapping from these
+                      types to the types found in the Datadog Web UI can be found
+                      in the Datadog API [documentation page](https://docs.datadoghq.com/api/v1/monitors/#create-a-monitor).
+                      Note: The monitor type cannot be changed after a monitor is
+                      created. Valid values are `composite`, `event alert`, `log alert`,
+                      `metric alert`, `process alert`, `query alert`, `rum alert`,
+                      `service check`, `synthetics alert`, `trace-analytics alert`,
+                      `slo alert`, `event-v2 alert`, `audit alert`, `ci-pipelines
+                      alert`, `error-tracking alert`.'
+                    type: string
+                  validate:
+                    description: If set to `false`, skip the validation call done
+                      during plan.
+                    type: boolean
+                required:
+                - message
+                - query
+                - type
+                type: object
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+          status:
+            description: MonitorStatus defines the observed state of Monitor.
+            properties:
+              atProvider:
+                properties:
+                  id:
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

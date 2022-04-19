@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: resources.null.datadog.jet.crossplane.io
+  name: jsons.monitor.datadog.jet.crossplane.io
 spec:
-  group: null.datadog.jet.crossplane.io
+  group: monitor.datadog.jet.crossplane.io
   names:
     categories:
     - crossplane
     - managed
     - datadogjet
-    kind: Resource
-    listKind: ResourceList
-    plural: resources
-    singular: resource
+    kind: JSON
+    listKind: JSONList
+    plural: jsons
+    singular: json
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: Resource is the Schema for the Resources API
+        description: JSON is the Schema for the JSONs API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +50,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: ResourceSpec defines the desired state of Resource
+            description: JSONSpec defines the desired state of JSON
             properties:
               deletionPolicy:
                 default: Delete
@@ -63,13 +63,14 @@ spec:
                 type: string
               forProvider:
                 properties:
-                  triggers:
-                    additionalProperties:
-                      type: string
-                    description: A map of arbitrary strings that, when changed, will
-                      force the null resource to be replaced, re-running any associated
-                      provisioners.
-                    type: object
+                  monitor:
+                    description: The JSON formatted definition of the monitor.
+                    type: string
+                  url:
+                    description: The URL of the monitor.
+                    type: string
+                required:
+                - monitor
                 type: object
               providerConfigRef:
                 default:
@@ -168,7 +169,7 @@ spec:
             - forProvider
             type: object
           status:
-            description: ResourceStatus defines the observed state of Resource.
+            description: JSONStatus defines the observed state of JSON.
             properties:
               atProvider:
                 properties:

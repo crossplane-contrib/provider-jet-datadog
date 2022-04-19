@@ -83,10 +83,10 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 			fmt.Sprintf("%s=%s", "HASHICUPS_PASSWORD", datadogCreds["password"]),
 		}*/
 		// set credentials in Terraform provider configuration
-		/*ps.Configuration = map[string]interface{}{
-			"username": datadogCreds["username"],
-			"password": datadogCreds["password"],
-		}*/
+		ps.Configuration = map[string]interface{}{
+			"apiKey": datadogCreds["apiKey"],
+			"appKey": datadogCreds["appKey"],
+		}
 		return ps, nil
 	}
 }
