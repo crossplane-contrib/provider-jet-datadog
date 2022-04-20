@@ -5,9 +5,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: monitors.datadog.datadog.jet.crossplane.io
+  name: monitors.monitor.datadog.jet.crossplane.io
 spec:
-  group: datadog.datadog.jet.crossplane.io
+  group: monitor.datadog.jet.crossplane.io
   names:
     categories:
     - crossplane
@@ -150,6 +150,9 @@ spec:
                           type: string
                       type: object
                     type: array
+                  name:
+                    description: Name of Datadog monitor.
+                    type: string
                   newGroupDelay:
                     description: "The time (in seconds) to skip evaluations for new
                       groups. \n `new_group_delay` overrides `new_host_delay` if it
@@ -252,6 +255,7 @@ spec:
                     type: boolean
                 required:
                 - message
+                - name
                 - query
                 - type
                 type: object

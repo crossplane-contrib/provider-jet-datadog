@@ -75,6 +75,10 @@ type MonitorParameters struct {
 	// +kubebuilder:validation:Optional
 	MonitorThresholds []MonitorThresholdsParameters `json:"monitorThresholds,omitempty" tf:"monitor_thresholds,omitempty"`
 
+	// Name of Datadog monitor.
+	// +kubebuilder:validation:Required
+	Name *string `json:"name" tf:"name,omitempty"`
+
 	// The time (in seconds) to skip evaluations for new groups.
 	//
 	// `new_group_delay` overrides `new_host_delay` if it is set to a nonzero value.

@@ -27,3 +27,12 @@ func (l *JSONList) GetItems() []resource.Managed {
 	}
 	return items
 }
+
+// GetItems of this MonitorList.
+func (l *MonitorList) GetItems() []resource.Managed {
+	items := make([]resource.Managed, len(l.Items))
+	for i := range l.Items {
+		items[i] = &l.Items[i]
+	}
+	return items
+}

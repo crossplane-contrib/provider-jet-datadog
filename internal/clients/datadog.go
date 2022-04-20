@@ -84,8 +84,9 @@ func TerraformSetupBuilder(version, providerSource, providerVersion string) terr
 		}*/
 		// set credentials in Terraform provider configuration
 		ps.Configuration = map[string]interface{}{
-			"apiKey": datadogCreds["apiKey"],
-			"appKey": datadogCreds["appKey"],
+			"api_key": datadogCreds["api_key"],
+			"app_key": datadogCreds["app_key"],
+			"api_url": datadogCreds["api_url"],
 		}
 		return ps, nil
 	}
