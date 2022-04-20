@@ -1,0 +1,12 @@
+apiVersion: monitor.datadog.jet.crossplane.io/v1alpha1
+kind: Monitor
+metadata:
+  name: example
+spec:
+  forProvider:
+    message: Crossplane rocks
+    name: Crossplane controlled monitor
+    query: "avg(last_1h):avg:aws.ec2.cpu{environment:foo,host:foo} by {host} > 4"
+    type: metric alert
+  providerConfigRef:
+    name: default
