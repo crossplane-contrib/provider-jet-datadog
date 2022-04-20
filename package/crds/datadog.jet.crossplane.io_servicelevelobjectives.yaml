@@ -5,18 +5,18 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: levelobjectives.service.datadog.jet.crossplane.io
+  name: servicelevelobjectives.datadog.jet.crossplane.io
 spec:
-  group: service.datadog.jet.crossplane.io
+  group: datadog.jet.crossplane.io
   names:
     categories:
     - crossplane
     - managed
     - datadogjet
-    kind: LevelObjective
-    listKind: LevelObjectiveList
-    plural: levelobjectives
-    singular: levelobjective
+    kind: ServiceLevelObjective
+    listKind: ServiceLevelObjectiveList
+    plural: servicelevelobjectives
+    singular: servicelevelobjective
   scope: Cluster
   versions:
   - additionalPrinterColumns:
@@ -35,7 +35,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: LevelObjective is the Schema for the LevelObjectives API
+        description: ServiceLevelObjective is the Schema for the ServiceLevelObjectives
+          API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -50,7 +51,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: LevelObjectiveSpec defines the desired state of LevelObjective
+            description: ServiceLevelObjectiveSpec defines the desired state of ServiceLevelObjective
             properties:
               deletionPolicy:
                 default: Delete
@@ -81,6 +82,9 @@ spec:
                     items:
                       type: number
                     type: array
+                  name:
+                    description: Name of Datadog service level objective
+                    type: string
                   query:
                     description: The metric query of good / total events
                     items:
@@ -138,6 +142,7 @@ spec:
                     description: Whether or not to validate the SLO.
                     type: boolean
                 required:
+                - name
                 - thresholds
                 - type
                 type: object
@@ -238,7 +243,8 @@ spec:
             - forProvider
             type: object
           status:
-            description: LevelObjectiveStatus defines the observed state of LevelObjective.
+            description: ServiceLevelObjectiveStatus defines the observed state of
+              ServiceLevelObjective.
             properties:
               atProvider:
                 properties:

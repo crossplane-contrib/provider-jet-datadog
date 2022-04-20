@@ -25,11 +25,25 @@ import (
 	v1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
 )
 
-type LevelObjectiveObservation struct {
+type QueryObservation struct {
+}
+
+type QueryParameters struct {
+
+	// The sum of the `total` events.
+	// +kubebuilder:validation:Required
+	Denominator *string `json:"denominator" tf:"denominator,omitempty"`
+
+	// The sum of all the `good` events.
+	// +kubebuilder:validation:Required
+	Numerator *string `json:"numerator" tf:"numerator,omitempty"`
+}
+
+type ServiceLevelObjectiveObservation struct {
 	ID *string `json:"id,omitempty" tf:"id,omitempty"`
 }
 
-type LevelObjectiveParameters struct {
+type ServiceLevelObjectiveParameters struct {
 
 	// A description of this service level objective.
 	// +kubebuilder:validation:Optional
@@ -46,6 +60,10 @@ type LevelObjectiveParameters struct {
 	// A static set of monitor IDs to use as part of the SLO
 	// +kubebuilder:validation:Optional
 	MonitorIds []*float64 `json:"monitorIds,omitempty" tf:"monitor_ids,omitempty"`
+
+	// Name of Datadog service level objective
+	// +kubebuilder:validation:Required
+	Name *string `json:"name" tf:"name,omitempty"`
 
 	// The metric query of good / total events
 	// +kubebuilder:validation:Optional
@@ -66,20 +84,6 @@ type LevelObjectiveParameters struct {
 	// Whether or not to validate the SLO.
 	// +kubebuilder:validation:Optional
 	Validate *bool `json:"validate,omitempty" tf:"validate,omitempty"`
-}
-
-type QueryObservation struct {
-}
-
-type QueryParameters struct {
-
-	// The sum of the `total` events.
-	// +kubebuilder:validation:Required
-	Denominator *string `json:"denominator" tf:"denominator,omitempty"`
-
-	// The sum of all the `good` events.
-	// +kubebuilder:validation:Required
-	Numerator *string `json:"numerator" tf:"numerator,omitempty"`
 }
 
 type ThresholdsObservation struct {
@@ -103,51 +107,51 @@ type ThresholdsParameters struct {
 	Warning *float64 `json:"warning,omitempty" tf:"warning,omitempty"`
 }
 
-// LevelObjectiveSpec defines the desired state of LevelObjective
-type LevelObjectiveSpec struct {
+// ServiceLevelObjectiveSpec defines the desired state of ServiceLevelObjective
+type ServiceLevelObjectiveSpec struct {
 	v1.ResourceSpec `json:",inline"`
-	ForProvider     LevelObjectiveParameters `json:"forProvider"`
+	ForProvider     ServiceLevelObjectiveParameters `json:"forProvider"`
 }
 
-// LevelObjectiveStatus defines the observed state of LevelObjective.
-type LevelObjectiveStatus struct {
+// ServiceLevelObjectiveStatus defines the observed state of ServiceLevelObjective.
+type ServiceLevelObjectiveStatus struct {
 	v1.ResourceStatus `json:",inline"`
-	AtProvider        LevelObjectiveObservation `json:"atProvider,omitempty"`
+	AtProvider        ServiceLevelObjectiveObservation `json:"atProvider,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// LevelObjective is the Schema for the LevelObjectives API
+// ServiceLevelObjective is the Schema for the ServiceLevelObjectives API
 // +kubebuilder:printcolumn:name="READY",type="string",JSONPath=".status.conditions[?(@.type=='Ready')].status"
 // +kubebuilder:printcolumn:name="SYNCED",type="string",JSONPath=".status.conditions[?(@.type=='Synced')].status"
 // +kubebuilder:printcolumn:name="EXTERNAL-NAME",type="string",JSONPath=".metadata.annotations.crossplane\\.io/external-name"
 // +kubebuilder:printcolumn:name="AGE",type="date",JSONPath=".metadata.creationTimestamp"
 // +kubebuilder:subresource:status
 // +kubebuilder:resource:scope=Cluster,categories={crossplane,managed,datadogjet}
-type LevelObjective struct {
+type ServiceLevelObjective struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              LevelObjectiveSpec   `json:"spec"`
-	Status            LevelObjectiveStatus `json:"status,omitempty"`
+	Spec              ServiceLevelObjectiveSpec   `json:"spec"`
+	Status            ServiceLevelObjectiveStatus `json:"status,omitempty"`
 }
 
 // +kubebuilder:object:root=true
 
-// LevelObjectiveList contains a list of LevelObjectives
-type LevelObjectiveList struct {
+// ServiceLevelObjectiveList contains a list of ServiceLevelObjectives
+type ServiceLevelObjectiveList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []LevelObjective `json:"items"`
+	Items           []ServiceLevelObjective `json:"items"`
 }
 
 // Repository type metadata.
 var (
-	LevelObjective_Kind             = "LevelObjective"
-	LevelObjective_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: LevelObjective_Kind}.String()
-	LevelObjective_KindAPIVersion   = LevelObjective_Kind + "." + CRDGroupVersion.String()
-	LevelObjective_GroupVersionKind = CRDGroupVersion.WithKind(LevelObjective_Kind)
+	ServiceLevelObjective_Kind             = "ServiceLevelObjective"
+	ServiceLevelObjective_GroupKind        = schema.GroupKind{Group: CRDGroup, Kind: ServiceLevelObjective_Kind}.String()
+	ServiceLevelObjective_KindAPIVersion   = ServiceLevelObjective_Kind + "." + CRDGroupVersion.String()
+	ServiceLevelObjective_GroupVersionKind = CRDGroupVersion.WithKind(ServiceLevelObjective_Kind)
 )
 
 func init() {
-	SchemeBuilder.Register(&LevelObjective{}, &LevelObjectiveList{})
+	SchemeBuilder.Register(&ServiceLevelObjective{}, &ServiceLevelObjectiveList{})
 }

@@ -1,0 +1,16 @@
+apiVersion: datadog.jet.crossplane.io/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  name: example
+spec:
+  forProvider:
+    name: Crossplane controlled SLO
+    query:
+      - numerator: sum:my.custom.count.metric{type:good_events}.as_count()
+        denominator: sum:my.custom.count.metric{*}.as_count()
+    thresholds:
+      - target: 99.9
+        timeframe: 7d
+    type: metric
+  providerConfigRef:
+    name: default

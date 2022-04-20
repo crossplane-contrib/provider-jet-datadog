@@ -21,20 +21,20 @@ import (
 
 	"github.com/crossplane/terrajet/pkg/controller"
 
+	servicelevelobjective "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/datadog/servicelevelobjective"
 	json "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/json"
 	monitor "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/monitor"
 	providerconfig "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/providerconfig"
-	levelobjective "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/service/levelobjective"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		servicelevelobjective.Setup,
 		json.Setup,
 		monitor.Setup,
 		providerconfig.Setup,
-		levelobjective.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err
