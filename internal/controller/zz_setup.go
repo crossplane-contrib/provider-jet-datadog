@@ -21,9 +21,9 @@ import (
 
 	"github.com/crossplane/terrajet/pkg/controller"
 
-	servicelevelobjective "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/datadog/servicelevelobjective"
 	json "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/json"
 	monitor "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/monitor"
+	servicelevelobjective "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/servicelevelobjective"
 	providerconfig "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/providerconfig"
 )
 
@@ -31,9 +31,9 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		servicelevelobjective.Setup,
 		json.Setup,
 		monitor.Setup,
+		servicelevelobjective.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

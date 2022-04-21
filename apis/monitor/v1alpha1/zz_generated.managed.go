@@ -150,3 +150,69 @@ func (mg *Monitor) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetail
 func (mg *Monitor) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
 	mg.Spec.WriteConnectionSecretToReference = r
 }
+
+// GetCondition of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) GetCondition(ct xpv1.ConditionType) xpv1.Condition {
+	return mg.Status.GetCondition(ct)
+}
+
+// GetDeletionPolicy of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) GetDeletionPolicy() xpv1.DeletionPolicy {
+	return mg.Spec.DeletionPolicy
+}
+
+// GetProviderConfigReference of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) GetProviderConfigReference() *xpv1.Reference {
+	return mg.Spec.ProviderConfigReference
+}
+
+/*
+GetProviderReference of this ServiceLevelObjective.
+Deprecated: Use GetProviderConfigReference.
+*/
+func (mg *ServiceLevelObjective) GetProviderReference() *xpv1.Reference {
+	return mg.Spec.ProviderReference
+}
+
+// GetPublishConnectionDetailsTo of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) GetPublishConnectionDetailsTo() *xpv1.PublishConnectionDetailsTo {
+	return mg.Spec.PublishConnectionDetailsTo
+}
+
+// GetWriteConnectionSecretToReference of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) GetWriteConnectionSecretToReference() *xpv1.SecretReference {
+	return mg.Spec.WriteConnectionSecretToReference
+}
+
+// SetConditions of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) SetConditions(c ...xpv1.Condition) {
+	mg.Status.SetConditions(c...)
+}
+
+// SetDeletionPolicy of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) SetDeletionPolicy(r xpv1.DeletionPolicy) {
+	mg.Spec.DeletionPolicy = r
+}
+
+// SetProviderConfigReference of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) SetProviderConfigReference(r *xpv1.Reference) {
+	mg.Spec.ProviderConfigReference = r
+}
+
+/*
+SetProviderReference of this ServiceLevelObjective.
+Deprecated: Use SetProviderConfigReference.
+*/
+func (mg *ServiceLevelObjective) SetProviderReference(r *xpv1.Reference) {
+	mg.Spec.ProviderReference = r
+}
+
+// SetPublishConnectionDetailsTo of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) SetPublishConnectionDetailsTo(r *xpv1.PublishConnectionDetailsTo) {
+	mg.Spec.PublishConnectionDetailsTo = r
+}
+
+// SetWriteConnectionSecretToReference of this ServiceLevelObjective.
+func (mg *ServiceLevelObjective) SetWriteConnectionSecretToReference(r *xpv1.SecretReference) {
+	mg.Spec.WriteConnectionSecretToReference = r
+}
