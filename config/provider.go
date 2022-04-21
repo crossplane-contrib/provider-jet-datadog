@@ -23,7 +23,6 @@ import (
 	tjconfig "github.com/crossplane/terrajet/pkg/config"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	"github.com/crossplane-contrib/provider-jet-datadog/config/base"
 	"github.com/crossplane-contrib/provider-jet-datadog/config/monitor"
 )
 
@@ -54,7 +53,6 @@ func GetProvider() *tjconfig.Provider {
 
 	for _, configure := range []func(provider *tjconfig.Provider){
 		// add custom config functions
-		base.Configure,
 		monitor.Configure,
 	} {
 		configure(pc)

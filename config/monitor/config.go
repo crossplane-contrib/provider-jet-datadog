@@ -30,4 +30,10 @@ func Configure(p *tjconfig.Provider) {
 	p.AddResourceConfigurator("datadog_monitor_json", func(r *tjconfig.Resource) {
 		r.ExternalName = tjconfig.IdentifierFromProvider
 	})
+
+	p.AddResourceConfigurator("datadog_service_level_objective", func(r *tjconfig.Resource) {
+		r.ExternalName = tjconfig.IdentifierFromProvider
+		r.Kind = "ServiceLevelObjective"
+		r.ShortGroup = ""
+	})
 }
