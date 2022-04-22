@@ -35,5 +35,10 @@ func Configure(p *tjconfig.Provider) {
 		r.ExternalName = tjconfig.IdentifierFromProvider
 		r.Kind = "ServiceLevelObjective"
 		r.ShortGroup = "monitor"
+		// NOTE(ytsarev): cross reference will fail here until
+		// https://github.com/crossplane/terrajet/issues/277 is solved
+		// r.References["monitor_ids"] = config.Reference{
+		//	Type: "Monitor",
+		// }
 	})
 }

@@ -1,0 +1,15 @@
+apiVersion: monitor.datadog.jet.crossplane.io/v1alpha1
+kind: ServiceLevelObjective
+metadata:
+  name: example
+spec:
+  forProvider:
+    name: Crossplane controlled SLO of monitor type
+    monitorIds:
+       - 5382622
+    thresholds:
+      - target: 99.9
+        timeframe: 7d
+    type: monitor
+  providerConfigRef:
+    name: default
