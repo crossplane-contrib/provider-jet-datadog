@@ -25,6 +25,7 @@ import (
 	monitor "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/monitor"
 	servicelevelobjective "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/servicelevelobjective"
 	providerconfig "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/providerconfig"
+	test "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/synthetics/test"
 )
 
 // Setup creates all controllers with the supplied logger and adds them to
@@ -35,6 +36,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		monitor.Setup,
 		servicelevelobjective.Setup,
 		providerconfig.Setup,
+		test.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
 			return err

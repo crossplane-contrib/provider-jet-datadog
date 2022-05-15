@@ -1,0 +1,26 @@
+apiVersion: synthetics.datadog.jet.crossplane.io/v1alpha1
+kind: Test
+metadata:
+  name: example-api
+spec:
+  forProvider:
+    message: |
+      {{#is_alert}} https://example.com/ is down! {{/is_alert}}
+      {{^is_alert}} https://example.com/ is UP! {{/is_alert}}
+    name: Crossplane Managed example.com test
+    type: api
+    subtype: http
+    status: live
+    requestDefinition:
+    - method: GET
+      url: https://example.com/
+    locations:
+    - aws:us-east-1
+    assertion:
+    - type: statusCode
+      target: "200"
+      operator: is
+    optionsList:
+    - tickEvery: 60
+  providerConfigRef:
+    name: default

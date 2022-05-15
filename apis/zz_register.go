@@ -23,6 +23,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 
 	v1alpha1 "github.com/crossplane-contrib/provider-jet-datadog/apis/monitor/v1alpha1"
+	v1alpha1synthetics "github.com/crossplane-contrib/provider-jet-datadog/apis/synthetics/v1alpha1"
 	v1alpha1apis "github.com/crossplane-contrib/provider-jet-datadog/apis/v1alpha1"
 )
 
@@ -30,6 +31,7 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
+		v1alpha1synthetics.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 	)
 }
