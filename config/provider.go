@@ -24,6 +24,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	"github.com/crossplane-contrib/provider-jet-datadog/config/monitor"
+	"github.com/crossplane-contrib/provider-jet-datadog/config/synthetics"
 )
 
 const (
@@ -49,11 +50,13 @@ func GetProvider() *tjconfig.Provider {
 			"datadog_monitor$",
 			"datadog_monitor_json$",
 			"datadog_service_level_objective$",
+			"datadog_synthetics_test$",
 		}))
 
 	for _, configure := range []func(provider *tjconfig.Provider){
 		// add custom config functions
 		monitor.Configure,
+		synthetics.Configure,
 	} {
 		configure(pc)
 	}
