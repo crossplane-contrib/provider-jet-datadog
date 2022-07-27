@@ -1,0 +1,13 @@
+apiVersion: downtime.datadog.jet.crossplane.io/v1alpha1
+kind: Downtime
+metadata:
+  name: downtime-example
+spec:
+  forProvider:
+    scope:
+      - '*'
+    start: 1658906391
+    end: 1658909991
+    monitorId: 62665832
+  providerConfigRef:
+    name: provider-datadog-${DD_ACCOUNT_NAME}

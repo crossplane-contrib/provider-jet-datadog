@@ -20,6 +20,8 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/crossplane-contrib/provider-jet-datadog/config/downtime"
+
 	tjconfig "github.com/crossplane/terrajet/pkg/config"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
@@ -49,6 +51,7 @@ func GetProvider() *tjconfig.Provider {
 		tjconfig.WithIncludeList([]string{
 			"datadog_monitor$",
 			"datadog_monitor_json$",
+			"datadog_downtime$",
 			"datadog_service_level_objective$",
 			"datadog_synthetics_test$",
 		}))
@@ -57,6 +60,7 @@ func GetProvider() *tjconfig.Provider {
 		// add custom config functions
 		monitor.Configure,
 		synthetics.Configure,
+		downtime.Configure,
 	} {
 		configure(pc)
 	}
