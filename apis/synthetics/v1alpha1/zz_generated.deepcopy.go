@@ -705,6 +705,17 @@ func (in *OptionsListParameters) DeepCopyInto(out *OptionsListParameters) {
 		*out = new(bool)
 		**out = **in
 	}
+	if in.RestrictedRoles != nil {
+		in, out := &in.RestrictedRoles, &out.RestrictedRoles
+		*out = make([]*string, len(*in))
+		for i := range *in {
+			if (*in)[i] != nil {
+				in, out := &(*in)[i], &(*out)[i]
+				*out = new(string)
+				**out = **in
+			}
+		}
+	}
 	if in.Retry != nil {
 		in, out := &in.Retry, &out.Retry
 		*out = make([]OptionsListRetryParameters, len(*in))

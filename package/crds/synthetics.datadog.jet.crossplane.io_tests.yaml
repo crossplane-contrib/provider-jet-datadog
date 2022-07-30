@@ -748,6 +748,12 @@ spec:
                         noScreenshot:
                           description: Prevents saving screenshots of the steps.
                           type: boolean
+                        restrictedRoles:
+                          description: A list of role identifiers pulled from the
+                            Roles API to restrict read and write access.
+                          items:
+                            type: string
+                          type: array
                         retry:
                           items:
                             properties:

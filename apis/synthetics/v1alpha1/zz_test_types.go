@@ -325,6 +325,10 @@ type OptionsListParameters struct {
 	// +kubebuilder:validation:Optional
 	NoScreenshot *bool `json:"noScreenshot,omitempty" tf:"no_screenshot,omitempty"`
 
+	// A list of role identifiers pulled from the Roles API to restrict read and write access.
+	// +kubebuilder:validation:Optional
+	RestrictedRoles []*string `json:"restrictedRoles,omitempty" tf:"restricted_roles,omitempty"`
+
 	// +kubebuilder:validation:Optional
 	Retry []OptionsListRetryParameters `json:"retry,omitempty" tf:"retry,omitempty"`
 
