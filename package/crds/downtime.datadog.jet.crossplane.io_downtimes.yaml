@@ -85,6 +85,10 @@ spec:
                     items:
                       type: string
                     type: array
+                  muteFirstRecoveryNotification:
+                    description: When true the first recovery notification during
+                      the downtime will be muted
+                    type: boolean
                   recurrence:
                     description: Optional recurring schedule for this downtime
                     items:
@@ -100,10 +104,12 @@ spec:
                             of each month, use `FREQ=MONTHLY;INTERVAL=1`. Most common
                             rrule options from the iCalendar Spec are supported. Attributes
                             specifying the duration in RRULE are not supported (for
-                            example, `DTSTART`, `DTEND`, `DURATION`).
+                            example, `DTSTART`, `DTEND`, `DURATION`). Only applicable
+                            when `type` is `rrule`.
                           type: string
                         type:
-                          description: One of `days`, `weeks`, `months`, or `years`
+                          description: One of `days`, `weeks`, `months`, `years`,
+                            or `rrule`.
                           type: string
                         untilDate:
                           description: The date at which the recurrence should end

@@ -57,6 +57,10 @@ type DowntimeParameters struct {
 	// +kubebuilder:validation:Optional
 	MonitorTags []*string `json:"monitorTags,omitempty" tf:"monitor_tags,omitempty"`
 
+	// When true the first recovery notification during the downtime will be muted
+	// +kubebuilder:validation:Optional
+	MuteFirstRecoveryNotification *bool `json:"muteFirstRecoveryNotification,omitempty" tf:"mute_first_recovery_notification,omitempty"`
+
 	// Optional recurring schedule for this downtime
 	// +kubebuilder:validation:Optional
 	Recurrence []RecurrenceParameters `json:"recurrence,omitempty" tf:"recurrence,omitempty"`
@@ -87,11 +91,11 @@ type RecurrenceParameters struct {
 	// +kubebuilder:validation:Optional
 	Period *float64 `json:"period,omitempty" tf:"period,omitempty"`
 
-	// The RRULE standard for defining recurring events. For example, to have a recurring event on the first day of each month, use `FREQ=MONTHLY;INTERVAL=1`. Most common rrule options from the iCalendar Spec are supported. Attributes specifying the duration in RRULE are not supported (for example, `DTSTART`, `DTEND`, `DURATION`).
+	// The RRULE standard for defining recurring events. For example, to have a recurring event on the first day of each month, use `FREQ=MONTHLY;INTERVAL=1`. Most common rrule options from the iCalendar Spec are supported. Attributes specifying the duration in RRULE are not supported (for example, `DTSTART`, `DTEND`, `DURATION`). Only applicable when `type` is `rrule`.
 	// +kubebuilder:validation:Optional
 	Rrule *string `json:"rrule,omitempty" tf:"rrule,omitempty"`
 
-	// One of `days`, `weeks`, `months`, or `years`
+	// One of `days`, `weeks`, `months`, `years`, or `rrule`.
 	// +kubebuilder:validation:Required
 	Type *string `json:"type" tf:"type,omitempty"`
 

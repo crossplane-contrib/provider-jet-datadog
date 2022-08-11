@@ -153,6 +153,11 @@ func (in *DowntimeParameters) DeepCopyInto(out *DowntimeParameters) {
 			}
 		}
 	}
+	if in.MuteFirstRecoveryNotification != nil {
+		in, out := &in.MuteFirstRecoveryNotification, &out.MuteFirstRecoveryNotification
+		*out = new(bool)
+		**out = **in
+	}
 	if in.Recurrence != nil {
 		in, out := &in.Recurrence, &out.Recurrence
 		*out = make([]RecurrenceParameters, len(*in))

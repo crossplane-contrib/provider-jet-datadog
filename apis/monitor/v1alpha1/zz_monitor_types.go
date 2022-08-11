@@ -57,7 +57,7 @@ type MonitorParameters struct {
 	// +kubebuilder:validation:Optional
 	IncludeTags *bool `json:"includeTags,omitempty" tf:"include_tags,omitempty"`
 
-	// A boolean indicating whether changes to this monitor should be restricted to the creator or admins. Defaults to `false`.
+	// A boolean indicating whether changes to this monitor should be restricted to the creator or admins. Defaults to `false`. **Deprecated.** Use `restricted_roles`.
 	// +kubebuilder:validation:Optional
 	Locked *bool `json:"locked,omitempty" tf:"locked,omitempty"`
 
@@ -131,6 +131,7 @@ type MonitorParameters struct {
 	// +kubebuilder:validation:Optional
 	RequireFullWindow *bool `json:"requireFullWindow,omitempty" tf:"require_full_window,omitempty"`
 
+	// A list of unique role identifiers to define which roles are allowed to edit the monitor. Editing a monitor includes any updates to the monitor configuration, monitor deletion, and muting of the monitor for any amount of time. Roles unique identifiers can be pulled from the [Roles API](https://docs.datadoghq.com/api/latest/roles/#list-roles) in the `data.id` field.
 	// +kubebuilder:validation:Optional
 	RestrictedRoles []*string `json:"restrictedRoles,omitempty" tf:"restricted_roles,omitempty"`
 
@@ -138,7 +139,7 @@ type MonitorParameters struct {
 	// +kubebuilder:validation:Optional
 	Tags []*string `json:"tags,omitempty" tf:"tags,omitempty"`
 
-	// The number of hours of the monitor not reporting data before it will automatically resolve from a triggered state.
+	// The number of hours of the monitor not reporting data before it automatically resolves from a triggered state. The minimum allowed value is 0 hours. The maximum allowed value is 24 hours.
 	// +kubebuilder:validation:Optional
 	TimeoutH *float64 `json:"timeoutH,omitempty" tf:"timeout_h,omitempty"`
 
