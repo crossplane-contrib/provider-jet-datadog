@@ -26,6 +26,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
 	"github.com/crossplane-contrib/provider-jet-datadog/config/monitor"
+	"github.com/crossplane-contrib/provider-jet-datadog/config/role"
 	"github.com/crossplane-contrib/provider-jet-datadog/config/synthetics"
 )
 
@@ -54,6 +55,7 @@ func GetProvider() *tjconfig.Provider {
 			"datadog_downtime$",
 			"datadog_service_level_objective$",
 			"datadog_synthetics_test$",
+			"datadog_role$",
 		}))
 
 	for _, configure := range []func(provider *tjconfig.Provider){
@@ -61,6 +63,7 @@ func GetProvider() *tjconfig.Provider {
 		monitor.Configure,
 		synthetics.Configure,
 		downtime.Configure,
+		role.Configure,
 	} {
 		configure(pc)
 	}
