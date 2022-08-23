@@ -26,6 +26,7 @@ import (
 	monitor "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/monitor"
 	servicelevelobjective "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/servicelevelobjective"
 	providerconfig "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/providerconfig"
+	role "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/role/role"
 	test "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/synthetics/test"
 )
 
@@ -38,6 +39,7 @@ func Setup(mgr ctrl.Manager, o controller.Options) error {
 		monitor.Setup,
 		servicelevelobjective.Setup,
 		providerconfig.Setup,
+		role.Setup,
 		test.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

@@ -24,6 +24,7 @@ import (
 
 	v1alpha1 "github.com/crossplane-contrib/provider-jet-datadog/apis/downtime/v1alpha1"
 	v1alpha1monitor "github.com/crossplane-contrib/provider-jet-datadog/apis/monitor/v1alpha1"
+	v1alpha1role "github.com/crossplane-contrib/provider-jet-datadog/apis/role/v1alpha1"
 	v1alpha1synthetics "github.com/crossplane-contrib/provider-jet-datadog/apis/synthetics/v1alpha1"
 	v1alpha1apis "github.com/crossplane-contrib/provider-jet-datadog/apis/v1alpha1"
 )
@@ -33,6 +34,7 @@ func init() {
 	AddToSchemes = append(AddToSchemes,
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1alpha1monitor.SchemeBuilder.AddToScheme,
+		v1alpha1role.SchemeBuilder.AddToScheme,
 		v1alpha1synthetics.SchemeBuilder.AddToScheme,
 		v1alpha1apis.SchemeBuilder.AddToScheme,
 	)

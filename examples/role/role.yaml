@@ -1,0 +1,23 @@
+apiVersion: role.datadog.jet.crossplane.io/v1alpha1
+kind: Role
+metadata:
+  name: my-datadog-role
+spec:
+  forProvider:
+    name: My DataDog Role
+    permission:
+      - id: 4fbb1652-dd15-11e8-9308-77be61fbb2c7
+      - id: bfafd0ce-7823-11ea-9689-c3e5118805ee
+      - id: 4fbeec96-dd15-11e8-9308-d3aac44f93e5
+  providerConfigRef:
+    name: default
+
+# It's only possible to add unrestriced permissions to a role.
+# Restricted permissions are always enabled by default eg. dashboards_read.
+# Get all unrestricted permissions with below command.
+#
+# curl -X GET "https://api.datadoghq.eu/api/v2/permissions" \
+# -H "Accept: application/json" \
+# -H "DD-API-KEY: ${DD_API_KEY}" \
+# -H "DD-APPLICATION-KEY: ${DD_APP_KEY}" |
+# jq '.data[] | select(.attributes.restricted == false)'
