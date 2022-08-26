@@ -1,0 +1,12 @@
+apiVersion: datadog.jet.crossplane.io/v1alpha1
+kind: AuthnMapping
+metadata:
+  name: my-authn-mapping
+spec:
+  forProvider:
+    key: 	<attribute-key>
+    value: <attribute-value>
+    roleRef:
+      name: my-datadog-role
+  providerConfigRef:
+    name: default
