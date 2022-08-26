@@ -1,0 +1,30 @@
+apiVersion: dashboard.datadog.jet.crossplane.io/v1alpha1
+kind: Dashboard
+metadata:
+  name: dashboard-example
+spec:
+  forProvider:
+    title: "Example Ordered Layout Dashboard"
+    description: "Created using the Datadog provider"
+    layoutType: "ordered"
+    widget:
+      - changeDefinition :
+          - request :
+              - q : "avg:jvm.heap_memory{environment:abc} by {environment}"
+                changeType : "absolute"
+                compareTo : "week_before"
+                increaseGood : true
+                orderBy : "name"
+                orderDir : "desc"
+                showPresent : true
+            title : "Dummy Title 1"
+            liveSpan : "5m"
+      - distributionDefinition :
+          - request :
+              - q : "avg:jvm.heap_memory{environment:abc} by {environment}"
+                style :
+                  - palette : "warm"
+            title : "Dummy Title 2"
+            liveSpan : "5m"
+  providerConfigRef:
+    name: provider-datadog-${DD_ACCOUNT_NAME}
