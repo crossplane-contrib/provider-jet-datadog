@@ -30,7 +30,7 @@ import (
 	"github.com/crossplane/terrajet/pkg/terraform"
 	ctrl "sigs.k8s.io/controller-runtime"
 
-	v1alpha1 "github.com/crossplane-contrib/provider-jet-datadog/apis/role/v1alpha1"
+	v1alpha1 "github.com/crossplane-contrib/provider-jet-datadog/apis/datadog/v1alpha1"
 )
 
 // Setup adds a controller that reconciles Role managed resources.

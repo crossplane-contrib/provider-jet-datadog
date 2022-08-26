@@ -22,12 +22,12 @@ import (
 	"github.com/crossplane/terrajet/pkg/controller"
 
 	dashboard "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/dashboard/dashboard"
+	role "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/datadog/role"
 	downtime "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/downtime/downtime"
 	json "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/json"
 	monitor "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/monitor"
 	servicelevelobjective "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/servicelevelobjective"
 	providerconfig "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/providerconfig"
-	role "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/role/role"
 	test "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/synthetics/test"
 )
 
@@ -36,12 +36,12 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		dashboard.Setup,
+		role.Setup,
 		downtime.Setup,
 		json.Setup,
 		monitor.Setup,
 		servicelevelobjective.Setup,
 		providerconfig.Setup,
-		role.Setup,
 		test.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {
