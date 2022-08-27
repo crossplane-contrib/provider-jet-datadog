@@ -20,12 +20,13 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/crossplane-contrib/provider-jet-datadog/config/authnmapping"
+	"github.com/crossplane-contrib/provider-jet-datadog/config/dashboard"
 	"github.com/crossplane-contrib/provider-jet-datadog/config/downtime"
 
 	tjconfig "github.com/crossplane/terrajet/pkg/config"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 
-	"github.com/crossplane-contrib/provider-jet-datadog/config/dashboard"
 	"github.com/crossplane-contrib/provider-jet-datadog/config/monitor"
 	"github.com/crossplane-contrib/provider-jet-datadog/config/role"
 	"github.com/crossplane-contrib/provider-jet-datadog/config/synthetics"
@@ -57,6 +58,7 @@ func GetProvider() *tjconfig.Provider {
 			"datadog_service_level_objective$",
 			"datadog_synthetics_test$",
 			"datadog_role$",
+			"datadog_authn_mapping$",
 			"datadog_dashboard$",
 		}))
 
@@ -67,6 +69,7 @@ func GetProvider() *tjconfig.Provider {
 		downtime.Configure,
 		role.Configure,
 		dashboard.Configure,
+		authnmapping.Configure,
 	} {
 		configure(pc)
 	}
