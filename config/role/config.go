@@ -24,6 +24,6 @@ import (
 func Configure(p *tjconfig.Provider) {
 	p.AddResourceConfigurator("datadog_role", func(r *tjconfig.Resource) {
 		r.ExternalName = tjconfig.IdentifierFromProvider
-		r.ShortGroup = "role"
+		r.ShortGroup = ""
 	})
 }

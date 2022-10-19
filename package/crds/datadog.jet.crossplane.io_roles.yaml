@@ -5,9 +5,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: roles.role.datadog.jet.crossplane.io
+  name: roles.datadog.jet.crossplane.io
 spec:
-  group: role.datadog.jet.crossplane.io
+  group: datadog.jet.crossplane.io
   names:
     categories:
     - crossplane
