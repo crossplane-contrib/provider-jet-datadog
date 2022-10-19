@@ -24,13 +24,17 @@ You can see the API reference [here](https://doc.crds.dev/github.com/crossplane-
 
 ## Developing
 
-Run code-generation pipeline:
+Setup Git submodules.
 ```console
-go run cmd/generator/main.go "$PWD"
+make submodules
+```
+
+Generate the Terrajet Provider.
+```console
+make generate
 ```
 
 Run against a Kubernetes cluster:
-
 ```console
 make run
 ```
