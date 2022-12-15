@@ -22,6 +22,7 @@ import (
 	"github.com/crossplane/terrajet/pkg/controller"
 
 	dashboard "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/dashboard/dashboard"
+	dashboardjson "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/dashboard/dashboardjson"
 	role "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/datadog/role"
 	downtime "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/downtime/downtime"
 	json "github.com/crossplane-contrib/provider-jet-datadog/internal/controller/monitor/json"
@@ -36,6 +37,7 @@ import (
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
 		dashboard.Setup,
+		dashboardjson.Setup,
 		role.Setup,
 		downtime.Setup,
 		json.Setup,

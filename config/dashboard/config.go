@@ -26,4 +26,10 @@ func Configure(p *tjconfig.Provider) {
 		r.ExternalName = tjconfig.IdentifierFromProvider
 		r.ShortGroup = "dashboard"
 	})
+
+	p.AddResourceConfigurator("datadog_dashboard_json", func(r *tjconfig.Resource) {
+		r.ExternalName = tjconfig.IdentifierFromProvider
+		r.Kind = "DashboardJSON"
+		r.ShortGroup = "dashboard"
+	})
 }

@@ -58,6 +58,7 @@ func GetProvider() *tjconfig.Provider {
 			"datadog_synthetics_test$",
 			"datadog_role$",
 			"datadog_dashboard$",
+			"datadog_dashboard_json$",
 		}))
 
 	for _, configure := range []func(provider *tjconfig.Provider){
