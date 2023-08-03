@@ -22,8 +22,8 @@ import (
 
 	"github.com/crossplane-contrib/provider-jet-datadog/config/downtime"
 
-	tjconfig "github.com/crossplane/terrajet/pkg/config"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/upbound/upjet/pkg/config"
+	ujconfig "github.com/upbound/upjet/pkg/config"
 
 	"github.com/crossplane-contrib/provider-jet-datadog/config/dashboard"
 	"github.com/crossplane-contrib/provider-jet-datadog/config/monitor"
@@ -39,29 +39,29 @@ const (
 //go:embed schema.json
 var providerSchema string
 
+//go:embed provider-metadata.yaml
+var providerMetadata string
+
 // GetProvider returns provider configuration
-func GetProvider() *tjconfig.Provider {
-	defaultResourceFn := func(name string, terraformResource *schema.Resource, opts ...tjconfig.ResourceOption) *tjconfig.Resource {
-		r := tjconfig.DefaultResource(name, terraformResource)
-		// Add any provider-specific defaulting here. For example:
-		//   r.ExternalName = tjconfig.IdentifierFromProvider
-		return r
-	}
+func GetProvider() *ujconfig.Provider {
+	providerOpts := config.WithBasePackages(config.BasePackages{
+		APIVersion: []string{
+			// Default package for ProviderConfig APIs
+			"apis/v1alpha1",
+		},
+		Controller: []string{
+			// Default package for ProviderConfig controllers
+			"internal/controller/providerconfig",
+		},
+	})
 
-	pc := tjconfig.NewProviderWithSchema([]byte(providerSchema), resourcePrefix, modulePath,
-		tjconfig.WithDefaultResourceFn(defaultResourceFn),
-		tjconfig.WithIncludeList([]string{
-			"datadog_monitor$",
-			"datadog_monitor_json$",
-			"datadog_downtime$",
-			"datadog_service_level_objective$",
-			"datadog_synthetics_test$",
-			"datadog_role$",
-			"datadog_dashboard$",
-			"datadog_dashboard_json$",
-		}))
+	pc := ujconfig.NewProvider([]byte(providerSchema), resourcePrefix, modulePath, []byte(providerMetadata), providerOpts,
+		ujconfig.WithIncludeList(ExternalNameConfigured()),
+		ujconfig.WithDefaultResourceOptions(
+			ExternalNameConfigurations(),
+		))
 
-	for _, configure := range []func(provider *tjconfig.Provider){
+	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
 		monitor.Configure,
 		synthetics.Configure,

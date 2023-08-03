@@ -29,6 +29,11 @@ func (mg *Dashboard) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this Dashboard.
+func (mg *Dashboard) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this Dashboard.
 func (mg *Dashboard) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -60,6 +65,11 @@ func (mg *Dashboard) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this Dashboard.
 func (mg *Dashboard) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this Dashboard.
+func (mg *Dashboard) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this Dashboard.
@@ -95,6 +105,11 @@ func (mg *DashboardJSON) GetDeletionPolicy() xpv1.DeletionPolicy {
 	return mg.Spec.DeletionPolicy
 }
 
+// GetManagementPolicies of this DashboardJSON.
+func (mg *DashboardJSON) GetManagementPolicies() xpv1.ManagementPolicies {
+	return mg.Spec.ManagementPolicies
+}
+
 // GetProviderConfigReference of this DashboardJSON.
 func (mg *DashboardJSON) GetProviderConfigReference() *xpv1.Reference {
 	return mg.Spec.ProviderConfigReference
@@ -126,6 +141,11 @@ func (mg *DashboardJSON) SetConditions(c ...xpv1.Condition) {
 // SetDeletionPolicy of this DashboardJSON.
 func (mg *DashboardJSON) SetDeletionPolicy(r xpv1.DeletionPolicy) {
 	mg.Spec.DeletionPolicy = r
+}
+
+// SetManagementPolicies of this DashboardJSON.
+func (mg *DashboardJSON) SetManagementPolicies(r xpv1.ManagementPolicies) {
+	mg.Spec.ManagementPolicies = r
 }
 
 // SetProviderConfigReference of this DashboardJSON.

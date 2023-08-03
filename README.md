@@ -1,7 +1,7 @@
 # Terrajet Datadog Provider
 
 `provider-jet-datadog` is a [Crossplane](https://crossplane.io/) provider that
-is built using [Terrajet](https://github.com/crossplane/terrajet) code
+is built using [Terrajet](https://github.com/upbound/upjet) code
 generation tools and exposes XRM-conformant managed resources for the
 Datadog API.
 

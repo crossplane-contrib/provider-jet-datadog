@@ -1,0 +1,2739 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.12.1
+  name: tests.synthetics.datadog.upbound.io
+spec:
+  group: synthetics.datadog.upbound.io
+  names:
+    categories:
+    - crossplane
+    - managed
+    - datadog
+    kind: Test
+    listKind: TestList
+    plural: tests
+    singular: test
+  scope: Cluster
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: READY
+      type: string
+    - jsonPath: .status.conditions[?(@.type=='Synced')].status
+      name: SYNCED
+      type: string
+    - jsonPath: .metadata.annotations.crossplane\.io/external-name
+      name: EXTERNAL-NAME
+      type: string
+    - jsonPath: .metadata.creationTimestamp
+      name: AGE
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: Test is the Schema for the Tests API. <no value>
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: TestSpec defines the desired state of Test
+            properties:
+              deletionPolicy:
+                default: Delete
+                description: 'DeletionPolicy specifies what will happen to the underlying
+                  external when this managed resource is deleted - either "Delete"
+                  or "Orphan" the external resource. This field is planned to be deprecated
+                  in favor of the ManagementPolicies field in a future release. Currently,
+                  both could be set independently and non-default values would be
+                  honored if the feature flag is enabled. See the design doc for more
+                  information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223'
+                enum:
+                - Orphan
+                - Delete
+                type: string
+              forProvider:
+                properties:
+                  apiStep:
+                    description: Steps for multistep api tests
+                    items:
+                      properties:
+                        allowFailure:
+                          description: Determines whether or not to continue with
+                            test if this step fails.
+                          type: boolean
+                        assertion:
+                          description: Assertions used for the test. Multiple `assertion`
+                            blocks are allowed with the structure below.
+                          items:
+                            properties:
+                              operator:
+                                description: Assertion operator. **Note** Only some
+                                  combinations of `type` and `operator` are valid
+                                  (please refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                                type: string
+                              property:
+                                description: If assertion type is `header`, this is
+                                  the header name.
+                                type: string
+                              target:
+                                description: Expected value. Depends on the assertion
+                                  type, refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)
+                                  for details.
+                                type: string
+                              targetjsonpath:
+                                description: Expected structure if `operator` is `validatesJSONPath`.
+                                  Exactly one nested block is allowed with the structure
+                                  below.
+                                items:
+                                  properties:
+                                    jsonpath:
+                                      description: The JSON path to assert.
+                                      type: string
+                                    operator:
+                                      description: The specific operator to use on
+                                        the path.
+                                      type: string
+                                    targetvalue:
+                                      description: Expected matching value.
+                                      type: string
+                                  type: object
+                                type: array
+                              type:
+                                description: Type of assertion. **Note** Only some
+                                  combinations of `type` and `operator` are valid
+                                  (please refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                                  Valid values are `body`, `header`, `statusCode`,
+                                  `certificate`, `responseTime`, `property`, `recordEvery`,
+                                  `recordSome`, `tlsVersion`, `minTlsVersion`, `latency`,
+                                  `packetLossPercentage`, `packetsReceived`, `networkHop`,
+                                  `receivedMessage`.
+                                type: string
+                            type: object
+                          type: array
+                        extractedValue:
+                          description: Values to parse and save as variables from
+                            the response.
+                          items:
+                            properties:
+                              field:
+                                description: When type is `http_header`, name of the
+                                  header to use to extract the value.
+                                type: string
+                              name:
+                                type: string
+                              parser:
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of parser for a Synthetics
+                                        global variable from a synthetics test. Valid
+                                        values are `raw`, `json_path`, `regex`, `x_path`.
+                                      type: string
+                                    value:
+                                      description: Regex or JSON path used for the
+                                        parser. Not used with type `raw`.
+                                      type: string
+                                  type: object
+                                type: array
+                              type:
+                                description: Property of the Synthetics Test Response
+                                  to use for the variable. Valid values are `http_body`,
+                                  `http_header`.
+                                type: string
+                            type: object
+                          type: array
+                        isCritical:
+                          description: Determines whether or not to consider the entire
+                            test as failed if this step fails. Can be used only if
+                            `allow_failure` is `true`.
+                          type: boolean
+                        name:
+                          description: The name of the step.
+                          type: string
+                        requestBasicauth:
+                          description: The HTTP basic authentication credentials.
+                            Exactly one nested block is allowed with the structure
+                            below.
+                          items:
+                            properties:
+                              accessKeySecretRef:
+                                description: Access key for `SIGV4` authentication.
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              domain:
+                                description: Domain for `ntlm` authentication.
+                                type: string
+                              passwordSecretRef:
+                                description: Password for authentication.
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              region:
+                                description: Region for `SIGV4` authentication.
+                                type: string
+                              secretKeySecretRef:
+                                description: Secret key for `SIGV4` authentication.
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              serviceName:
+                                description: Service name for `SIGV4` authentication.
+                                type: string
+                              sessionToken:
+                                description: Session token for `SIGV4` authentication.
+                                type: string
+                              type:
+                                description: Type of basic authentication to use when
+                                  performing the test.
+                                type: string
+                              username:
+                                description: Username for authentication.
+                                type: string
+                              workstation:
+                                description: Workstation for `ntlm` authentication.
+                                type: string
+                            type: object
+                          type: array
+                        requestClientCertificate:
+                          description: Client certificate to use when performing the
+                            test request. Exactly one nested block is allowed with
+                            the structure below.
+                          items:
+                            properties:
+                              cert:
+                                items:
+                                  properties:
+                                    contentSecretRef:
+                                      description: Content of the certificate.
+                                      properties:
+                                        key:
+                                          description: The key to select.
+                                          type: string
+                                        name:
+                                          description: Name of the secret.
+                                          type: string
+                                        namespace:
+                                          description: Namespace of the secret.
+                                          type: string
+                                      required:
+                                      - key
+                                      - name
+                                      - namespace
+                                      type: object
+                                    filename:
+                                      description: File name for the certificate.
+                                      type: string
+                                  required:
+                                  - contentSecretRef
+                                  type: object
+                                type: array
+                              key:
+                                items:
+                                  properties:
+                                    contentSecretRef:
+                                      description: Content of the certificate.
+                                      properties:
+                                        key:
+                                          description: The key to select.
+                                          type: string
+                                        name:
+                                          description: Name of the secret.
+                                          type: string
+                                        namespace:
+                                          description: Namespace of the secret.
+                                          type: string
+                                      required:
+                                      - key
+                                      - name
+                                      - namespace
+                                      type: object
+                                    filename:
+                                      description: File name for the certificate.
+                                      type: string
+                                  required:
+                                  - contentSecretRef
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        requestDefinition:
+                          description: The request for the api step.
+                          items:
+                            properties:
+                              allowInsecure:
+                                description: Allows loading insecure content for an
+                                  HTTP test.
+                                type: boolean
+                              body:
+                                description: The request body.
+                                type: string
+                              dnsServer:
+                                description: DNS server to use for DNS tests (`subtype
+                                  = "dns"`).
+                                type: string
+                              dnsServerPort:
+                                description: DNS server port to use for DNS tests.
+                                type: number
+                              followRedirects:
+                                description: Determines whether or not the API HTTP
+                                  test should follow redirects.
+                                type: boolean
+                              host:
+                                description: Host name to perform the test with.
+                                type: string
+                              message:
+                                description: For UDP and websocket tests, message
+                                  to send with the request.
+                                type: string
+                              method:
+                                description: The HTTP method. Valid values are `GET`,
+                                  `POST`, `PATCH`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`.
+                                type: string
+                              noSavingResponseBody:
+                                description: Determines whether or not to save the
+                                  response body.
+                                type: boolean
+                              numberOfPackets:
+                                description: Number of pings to use per test for ICMP
+                                  tests (`subtype = "icmp"`) between 0 and 10.
+                                type: number
+                              port:
+                                description: Port to use when performing the test.
+                                type: number
+                              servername:
+                                description: For SSL tests, it specifies on which
+                                  server you want to initiate the TLS handshake, allowing
+                                  the server to present one of multiple possible certificates
+                                  on the same IP address and TCP port number.
+                                type: string
+                              shouldTrackHops:
+                                description: This will turn on a traceroute probe
+                                  to discover all gateways along the path to the host
+                                  destination. For ICMP tests (`subtype = "icmp"`).
+                                type: boolean
+                              timeout:
+                                description: Timeout in seconds for the test. Defaults
+                                  to `60`.
+                                type: number
+                              url:
+                                description: The URL to send the request to.
+                                type: string
+                            type: object
+                          type: array
+                        requestHeaders:
+                          additionalProperties:
+                            type: string
+                          description: Header name and value map.
+                          type: object
+                        requestProxy:
+                          description: The proxy to perform the test.
+                          items:
+                            properties:
+                              headers:
+                                additionalProperties:
+                                  type: string
+                                description: Header name and value map.
+                                type: object
+                              url:
+                                description: URL of the proxy to perform the test.
+                                type: string
+                            type: object
+                          type: array
+                        requestQuery:
+                          additionalProperties:
+                            type: string
+                          description: Query arguments name and value map.
+                          type: object
+                        retry:
+                          items:
+                            properties:
+                              count:
+                                description: Number of retries needed to consider
+                                  a location as failed before sending a notification
+                                  alert.
+                                type: number
+                              interval:
+                                description: Interval between a failed test and the
+                                  next retry in milliseconds.
+                                type: number
+                            type: object
+                          type: array
+                        subtype:
+                          description: The subtype of the Synthetic multistep API
+                            test step. Valid values are `http`.
+                          type: string
+                      type: object
+                    type: array
+                  assertion:
+                    description: Assertions used for the test. Multiple `assertion`
+                      blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        operator:
+                          description: Assertion operator. **Note** Only some combinations
+                            of `type` and `operator` are valid (please refer to [Datadog
+                            documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                          type: string
+                        property:
+                          description: If assertion type is `header`, this is the
+                            header name.
+                          type: string
+                        target:
+                          description: Expected value. Depends on the assertion type,
+                            refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)
+                            for details.
+                          type: string
+                        targetjsonpath:
+                          description: Expected structure if `operator` is `validatesJSONPath`.
+                            Exactly one nested block is allowed with the structure
+                            below.
+                          items:
+                            properties:
+                              jsonpath:
+                                description: The JSON path to assert.
+                                type: string
+                              operator:
+                                description: The specific operator to use on the path.
+                                type: string
+                              targetvalue:
+                                description: Expected matching value.
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Type of assertion. **Note** Only some combinations
+                            of `type` and `operator` are valid (please refer to [Datadog
+                            documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                            Valid values are `body`, `header`, `statusCode`, `certificate`,
+                            `responseTime`, `property`, `recordEvery`, `recordSome`,
+                            `tlsVersion`, `minTlsVersion`, `latency`, `packetLossPercentage`,
+                            `packetsReceived`, `networkHop`, `receivedMessage`.
+                          type: string
+                      type: object
+                    type: array
+                  browserStep:
+                    description: Steps for browser tests.
+                    items:
+                      properties:
+                        allowFailure:
+                          description: Determines if the step should be allowed to
+                            fail.
+                          type: boolean
+                        forceElementUpdate:
+                          description: Force update of the "element" parameter for
+                            the step
+                          type: boolean
+                        isCritical:
+                          description: Determines whether or not to consider the entire
+                            test as failed if this step fails. Can be used only if
+                            `allow_failure` is `true`.
+                          type: boolean
+                        name:
+                          description: Name of the step.
+                          type: string
+                        params:
+                          description: Parameters for the step.
+                          items:
+                            properties:
+                              attribute:
+                                description: Name of the attribute to use for an "assert
+                                  attribute" step.
+                                type: string
+                              check:
+                                description: Check type to use for an assertion step.
+                                  Valid values are `equals`, `notEquals`, `contains`,
+                                  `notContains`, `startsWith`, `notStartsWith`, `greater`,
+                                  `lower`, `greaterEquals`, `lowerEquals`, `matchRegex`,
+                                  `between`, `isEmpty`, `notIsEmpty`.
+                                type: string
+                              clickType:
+                                description: Type of click to use for a "click" step.
+                                type: string
+                              code:
+                                description: Javascript code to use for the step.
+                                type: string
+                              delay:
+                                description: Delay between each key stroke for a "type
+                                  test" step.
+                                type: number
+                              element:
+                                description: Element to use for the step, json encoded
+                                  string.
+                                type: string
+                              elementUserLocator:
+                                description: Custom user selector to use for the step.
+                                items:
+                                  properties:
+                                    failTestOnCannotLocate:
+                                      type: boolean
+                                    value:
+                                      items:
+                                        properties:
+                                          type:
+                                            type: string
+                                          value:
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              email:
+                                description: Details of the email for an "assert email"
+                                  step.
+                                type: string
+                              file:
+                                description: For an "assert download" step.
+                                type: string
+                              files:
+                                description: Details of the files for an "upload files"
+                                  step, json encoded string.
+                                type: string
+                              modifiers:
+                                description: Modifier to use for a "press key" step.
+                                items:
+                                  type: string
+                                type: array
+                              playingTabId:
+                                description: ID of the tab to play the subtest.
+                                type: string
+                              request:
+                                description: Request for an API step.
+                                type: string
+                              subtestPublicId:
+                                description: ID of the Synthetics test to use as subtest.
+                                type: string
+                              value:
+                                description: Value of the step.
+                                type: string
+                              variable:
+                                description: Details of the variable to extract.
+                                items:
+                                  properties:
+                                    example:
+                                      description: Example of the extracted variable.
+                                      type: string
+                                    name:
+                                      description: Name of the extracted variable.
+                                      type: string
+                                  type: object
+                                type: array
+                              withClick:
+                                description: For "file upload" steps.
+                                type: boolean
+                              x:
+                                description: X coordinates for a "scroll step".
+                                type: number
+                              "y":
+                                description: Y coordinates for a "scroll step".
+                                type: number
+                            type: object
+                          type: array
+                        timeout:
+                          description: Used to override the default timeout of a step.
+                          type: number
+                        type:
+                          description: Type of the step. Valid values are `assertCurrentUrl`,
+                            `assertElementAttribute`, `assertElementContent`, `assertElementPresent`,
+                            `assertEmail`, `assertFileDownload`, `assertFromJavascript`,
+                            `assertPageContains`, `assertPageLacks`, `click`, `extractFromJavascript`,
+                            `extractVariable`, `goToEmailLink`, `goToUrl`, `goToUrlAndMeasureTti`,
+                            `hover`, `playSubTest`, `pressKey`, `refresh`, `runApiTest`,
+                            `scroll`, `selectOption`, `typeText`, `uploadFiles`, `wait`.
+                          type: string
+                      type: object
+                    type: array
+                  browserVariable:
+                    description: Variables used for a browser test steps. Multiple
+                      `variable` blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        example:
+                          description: Example for the variable.
+                          type: string
+                        id:
+                          description: ID of the global variable to use. This is actually
+                            only used (and required) in the case of using a variable
+                            of type `global`.
+                          type: string
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        pattern:
+                          description: Pattern of the variable.
+                          type: string
+                        type:
+                          description: Type of browser test variable. Valid values
+                            are `element`, `email`, `global`, `javascript`, `text`.
+                          type: string
+                      type: object
+                    type: array
+                  configVariable:
+                    description: Variables used for the test configuration. Multiple
+                      `config_variable` blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        example:
+                          description: Example for the variable.
+                          type: string
+                        id:
+                          description: When type = `global`, ID of the global variable
+                            to use.
+                          type: string
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        pattern:
+                          description: Pattern of the variable.
+                          type: string
+                        type:
+                          description: Type of test configuration variable. Valid
+                            values are `global`, `text`.
+                          type: string
+                      type: object
+                    type: array
+                  deviceIds:
+                    description: Required if `type = "browser"`. Array with the different
+                      device IDs used to run the test. Valid values are `laptop_large`,
+                      `tablet`, `mobile_small`, `chrome.laptop_large`, `chrome.tablet`,
+                      `chrome.mobile_small`, `firefox.laptop_large`, `firefox.tablet`,
+                      `firefox.mobile_small`, `edge.laptop_large`, `edge.tablet`,
+                      `edge.mobile_small`.
+                    items:
+                      type: string
+                    type: array
+                  locations:
+                    description: Array of locations used to run the test. Refer to
+                      [Datadog documentation](https://docs.datadoghq.com/synthetics/api_test/#request)
+                      for available locations (e.g. `aws:eu-central-1`).
+                    items:
+                      type: string
+                    type: array
+                  message:
+                    description: A message to include with notifications for this
+                      synthetics test. Email notifications can be sent to specific
+                      users by using the same `@username` notation as events.
+                    type: string
+                  name:
+                    description: Name of Datadog synthetics test.
+                    type: string
+                  optionsList:
+                    items:
+                      properties:
+                        acceptSelfSigned:
+                          description: For SSL test, whether or not the test should
+                            allow self signed certificates.
+                          type: boolean
+                        allowInsecure:
+                          description: Allows loading insecure content for an HTTP
+                            test.
+                          type: boolean
+                        checkCertificateRevocation:
+                          description: For SSL test, whether or not the test should
+                            fail on revoked certificate in stapled OCSP.
+                          type: boolean
+                        followRedirects:
+                          description: Determines whether or not the API HTTP test
+                            should follow redirects.
+                          type: boolean
+                        minFailureDuration:
+                          description: Minimum amount of time in failure required
+                            to trigger an alert. Default is `0`.
+                          type: number
+                        minLocationFailed:
+                          description: Minimum number of locations in failure required
+                            to trigger an alert. Default is `1`.
+                          type: number
+                        monitorName:
+                          description: The monitor name is used for the alert title
+                            as well as for all monitor dashboard widgets and SLOs.
+                          type: string
+                        monitorOptions:
+                          items:
+                            properties:
+                              renotifyInterval:
+                                description: Specify a renotification frequency.
+                                type: number
+                            type: object
+                          type: array
+                        monitorPriority:
+                          type: number
+                        noScreenshot:
+                          description: Prevents saving screenshots of the steps.
+                          type: boolean
+                        restrictedRoles:
+                          description: A list of role identifiers pulled from the
+                            Roles API to restrict read and write access.
+                          items:
+                            type: string
+                          type: array
+                        retry:
+                          items:
+                            properties:
+                              count:
+                                description: Number of retries needed to consider
+                                  a location as failed before sending a notification
+                                  alert.
+                                type: number
+                              interval:
+                                description: Interval between a failed test and the
+                                  next retry in milliseconds.
+                                type: number
+                            type: object
+                          type: array
+                        tickEvery:
+                          description: How often the test should run (in seconds).
+                          type: number
+                      type: object
+                    type: array
+                  requestBasicauth:
+                    description: The HTTP basic authentication credentials. Exactly
+                      one nested block is allowed with the structure below.
+                    items:
+                      properties:
+                        accessKeySecretRef:
+                          description: Access key for `SIGV4` authentication.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        domain:
+                          description: Domain for `ntlm` authentication.
+                          type: string
+                        passwordSecretRef:
+                          description: Password for authentication.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        region:
+                          description: Region for `SIGV4` authentication.
+                          type: string
+                        secretKeySecretRef:
+                          description: Secret key for `SIGV4` authentication.
+                          properties:
+                            key:
+                              description: The key to select.
+                              type: string
+                            name:
+                              description: Name of the secret.
+                              type: string
+                            namespace:
+                              description: Namespace of the secret.
+                              type: string
+                          required:
+                          - key
+                          - name
+                          - namespace
+                          type: object
+                        serviceName:
+                          description: Service name for `SIGV4` authentication.
+                          type: string
+                        sessionToken:
+                          description: Session token for `SIGV4` authentication.
+                          type: string
+                        type:
+                          description: Type of basic authentication to use when performing
+                            the test.
+                          type: string
+                        username:
+                          description: Username for authentication.
+                          type: string
+                        workstation:
+                          description: Workstation for `ntlm` authentication.
+                          type: string
+                      type: object
+                    type: array
+                  requestClientCertificate:
+                    description: Client certificate to use when performing the test
+                      request. Exactly one nested block is allowed with the structure
+                      below.
+                    items:
+                      properties:
+                        cert:
+                          items:
+                            properties:
+                              contentSecretRef:
+                                description: Content of the certificate.
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              filename:
+                                description: File name for the certificate.
+                                type: string
+                            required:
+                            - contentSecretRef
+                            type: object
+                          type: array
+                        key:
+                          items:
+                            properties:
+                              contentSecretRef:
+                                description: Content of the certificate.
+                                properties:
+                                  key:
+                                    description: The key to select.
+                                    type: string
+                                  name:
+                                    description: Name of the secret.
+                                    type: string
+                                  namespace:
+                                    description: Namespace of the secret.
+                                    type: string
+                                required:
+                                - key
+                                - name
+                                - namespace
+                                type: object
+                              filename:
+                                description: File name for the certificate.
+                                type: string
+                            required:
+                            - contentSecretRef
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  requestDefinition:
+                    description: Required if `type = "api"`. The synthetics test request.
+                    items:
+                      properties:
+                        body:
+                          description: The request body.
+                          type: string
+                        dnsServer:
+                          description: DNS server to use for DNS tests (`subtype =
+                            "dns"`).
+                          type: string
+                        dnsServerPort:
+                          description: DNS server port to use for DNS tests.
+                          type: number
+                        host:
+                          description: Host name to perform the test with.
+                          type: string
+                        message:
+                          description: For UDP and websocket tests, message to send
+                            with the request.
+                          type: string
+                        method:
+                          description: The HTTP method. Valid values are `GET`, `POST`,
+                            `PATCH`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`.
+                          type: string
+                        noSavingResponseBody:
+                          description: Determines whether or not to save the response
+                            body.
+                          type: boolean
+                        numberOfPackets:
+                          description: Number of pings to use per test for ICMP tests
+                            (`subtype = "icmp"`) between 0 and 10.
+                          type: number
+                        port:
+                          description: Port to use when performing the test.
+                          type: number
+                        servername:
+                          description: For SSL tests, it specifies on which server
+                            you want to initiate the TLS handshake, allowing the server
+                            to present one of multiple possible certificates on the
+                            same IP address and TCP port number.
+                          type: string
+                        shouldTrackHops:
+                          description: This will turn on a traceroute probe to discover
+                            all gateways along the path to the host destination. For
+                            ICMP tests (`subtype = "icmp"`).
+                          type: boolean
+                        timeout:
+                          description: Timeout in seconds for the test. Defaults to
+                            `60`.
+                          type: number
+                        url:
+                          description: The URL to send the request to.
+                          type: string
+                      type: object
+                    type: array
+                  requestHeaders:
+                    additionalProperties:
+                      type: string
+                    description: Header name and value map.
+                    type: object
+                  requestProxy:
+                    description: The proxy to perform the test.
+                    items:
+                      properties:
+                        headers:
+                          additionalProperties:
+                            type: string
+                          description: Header name and value map.
+                          type: object
+                        url:
+                          description: URL of the proxy to perform the test.
+                          type: string
+                      type: object
+                    type: array
+                  requestQuery:
+                    additionalProperties:
+                      type: string
+                    description: Query arguments name and value map.
+                    type: object
+                  setCookie:
+                    description: Cookies to be used for a browser test request, using
+                      the [Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
+                      syntax.
+                    type: string
+                  status:
+                    description: Define whether you want to start (`live`) or pause
+                      (`paused`) a Synthetic test. Valid values are `live`, `paused`.
+                    type: string
+                  subtype:
+                    description: The subtype of the Synthetic API test. Defaults to
+                      `http`. Valid values are `http`, `ssl`, `tcp`, `dns`, `multi`,
+                      `icmp`, `udp`, `websocket`.
+                    type: string
+                  tags:
+                    description: A list of tags to associate with your synthetics
+                      test. This can help you categorize and filter tests in the manage
+                      synthetics page of the UI. Default is an empty list (`[]`).
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: Synthetics test type. Valid values are `api`, `browser`.
+                    type: string
+                type: object
+              initProvider:
+                description: THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. InitProvider
+                  holds the same fields as ForProvider, with the exception of Identifier
+                  and other resource reference fields. The fields that are in InitProvider
+                  are merged into ForProvider when the resource is created. The same
+                  fields are also added to the terraform ignore_changes hook, to avoid
+                  updating them after creation. This is useful for fields that are
+                  required on creation, but we do not desire to update them after
+                  creation, for example because of an external controller is managing
+                  them, like an autoscaler.
+                properties:
+                  apiStep:
+                    description: Steps for multistep api tests
+                    items:
+                      properties:
+                        allowFailure:
+                          description: Determines whether or not to continue with
+                            test if this step fails.
+                          type: boolean
+                        assertion:
+                          description: Assertions used for the test. Multiple `assertion`
+                            blocks are allowed with the structure below.
+                          items:
+                            properties:
+                              operator:
+                                description: Assertion operator. **Note** Only some
+                                  combinations of `type` and `operator` are valid
+                                  (please refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                                type: string
+                              property:
+                                description: If assertion type is `header`, this is
+                                  the header name.
+                                type: string
+                              target:
+                                description: Expected value. Depends on the assertion
+                                  type, refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)
+                                  for details.
+                                type: string
+                              targetjsonpath:
+                                description: Expected structure if `operator` is `validatesJSONPath`.
+                                  Exactly one nested block is allowed with the structure
+                                  below.
+                                items:
+                                  properties:
+                                    jsonpath:
+                                      description: The JSON path to assert.
+                                      type: string
+                                    operator:
+                                      description: The specific operator to use on
+                                        the path.
+                                      type: string
+                                    targetvalue:
+                                      description: Expected matching value.
+                                      type: string
+                                  type: object
+                                type: array
+                              type:
+                                description: Type of assertion. **Note** Only some
+                                  combinations of `type` and `operator` are valid
+                                  (please refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                                  Valid values are `body`, `header`, `statusCode`,
+                                  `certificate`, `responseTime`, `property`, `recordEvery`,
+                                  `recordSome`, `tlsVersion`, `minTlsVersion`, `latency`,
+                                  `packetLossPercentage`, `packetsReceived`, `networkHop`,
+                                  `receivedMessage`.
+                                type: string
+                            type: object
+                          type: array
+                        extractedValue:
+                          description: Values to parse and save as variables from
+                            the response.
+                          items:
+                            properties:
+                              field:
+                                description: When type is `http_header`, name of the
+                                  header to use to extract the value.
+                                type: string
+                              name:
+                                type: string
+                              parser:
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of parser for a Synthetics
+                                        global variable from a synthetics test. Valid
+                                        values are `raw`, `json_path`, `regex`, `x_path`.
+                                      type: string
+                                    value:
+                                      description: Regex or JSON path used for the
+                                        parser. Not used with type `raw`.
+                                      type: string
+                                  type: object
+                                type: array
+                              type:
+                                description: Property of the Synthetics Test Response
+                                  to use for the variable. Valid values are `http_body`,
+                                  `http_header`.
+                                type: string
+                            type: object
+                          type: array
+                        isCritical:
+                          description: Determines whether or not to consider the entire
+                            test as failed if this step fails. Can be used only if
+                            `allow_failure` is `true`.
+                          type: boolean
+                        name:
+                          description: The name of the step.
+                          type: string
+                        requestBasicauth:
+                          description: The HTTP basic authentication credentials.
+                            Exactly one nested block is allowed with the structure
+                            below.
+                          items:
+                            properties:
+                              domain:
+                                description: Domain for `ntlm` authentication.
+                                type: string
+                              region:
+                                description: Region for `SIGV4` authentication.
+                                type: string
+                              serviceName:
+                                description: Service name for `SIGV4` authentication.
+                                type: string
+                              sessionToken:
+                                description: Session token for `SIGV4` authentication.
+                                type: string
+                              type:
+                                description: Type of basic authentication to use when
+                                  performing the test.
+                                type: string
+                              username:
+                                description: Username for authentication.
+                                type: string
+                              workstation:
+                                description: Workstation for `ntlm` authentication.
+                                type: string
+                            type: object
+                          type: array
+                        requestClientCertificate:
+                          description: Client certificate to use when performing the
+                            test request. Exactly one nested block is allowed with
+                            the structure below.
+                          items:
+                            properties:
+                              cert:
+                                items:
+                                  properties:
+                                    filename:
+                                      description: File name for the certificate.
+                                      type: string
+                                  type: object
+                                type: array
+                              key:
+                                items:
+                                  properties:
+                                    filename:
+                                      description: File name for the certificate.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        requestDefinition:
+                          description: The request for the api step.
+                          items:
+                            properties:
+                              allowInsecure:
+                                description: Allows loading insecure content for an
+                                  HTTP test.
+                                type: boolean
+                              body:
+                                description: The request body.
+                                type: string
+                              dnsServer:
+                                description: DNS server to use for DNS tests (`subtype
+                                  = "dns"`).
+                                type: string
+                              dnsServerPort:
+                                description: DNS server port to use for DNS tests.
+                                type: number
+                              followRedirects:
+                                description: Determines whether or not the API HTTP
+                                  test should follow redirects.
+                                type: boolean
+                              host:
+                                description: Host name to perform the test with.
+                                type: string
+                              message:
+                                description: For UDP and websocket tests, message
+                                  to send with the request.
+                                type: string
+                              method:
+                                description: The HTTP method. Valid values are `GET`,
+                                  `POST`, `PATCH`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`.
+                                type: string
+                              noSavingResponseBody:
+                                description: Determines whether or not to save the
+                                  response body.
+                                type: boolean
+                              numberOfPackets:
+                                description: Number of pings to use per test for ICMP
+                                  tests (`subtype = "icmp"`) between 0 and 10.
+                                type: number
+                              port:
+                                description: Port to use when performing the test.
+                                type: number
+                              servername:
+                                description: For SSL tests, it specifies on which
+                                  server you want to initiate the TLS handshake, allowing
+                                  the server to present one of multiple possible certificates
+                                  on the same IP address and TCP port number.
+                                type: string
+                              shouldTrackHops:
+                                description: This will turn on a traceroute probe
+                                  to discover all gateways along the path to the host
+                                  destination. For ICMP tests (`subtype = "icmp"`).
+                                type: boolean
+                              timeout:
+                                description: Timeout in seconds for the test. Defaults
+                                  to `60`.
+                                type: number
+                              url:
+                                description: The URL to send the request to.
+                                type: string
+                            type: object
+                          type: array
+                        requestHeaders:
+                          additionalProperties:
+                            type: string
+                          description: Header name and value map.
+                          type: object
+                        requestProxy:
+                          description: The proxy to perform the test.
+                          items:
+                            properties:
+                              headers:
+                                additionalProperties:
+                                  type: string
+                                description: Header name and value map.
+                                type: object
+                              url:
+                                description: URL of the proxy to perform the test.
+                                type: string
+                            type: object
+                          type: array
+                        requestQuery:
+                          additionalProperties:
+                            type: string
+                          description: Query arguments name and value map.
+                          type: object
+                        retry:
+                          items:
+                            properties:
+                              count:
+                                description: Number of retries needed to consider
+                                  a location as failed before sending a notification
+                                  alert.
+                                type: number
+                              interval:
+                                description: Interval between a failed test and the
+                                  next retry in milliseconds.
+                                type: number
+                            type: object
+                          type: array
+                        subtype:
+                          description: The subtype of the Synthetic multistep API
+                            test step. Valid values are `http`.
+                          type: string
+                      type: object
+                    type: array
+                  assertion:
+                    description: Assertions used for the test. Multiple `assertion`
+                      blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        operator:
+                          description: Assertion operator. **Note** Only some combinations
+                            of `type` and `operator` are valid (please refer to [Datadog
+                            documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                          type: string
+                        property:
+                          description: If assertion type is `header`, this is the
+                            header name.
+                          type: string
+                        target:
+                          description: Expected value. Depends on the assertion type,
+                            refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)
+                            for details.
+                          type: string
+                        targetjsonpath:
+                          description: Expected structure if `operator` is `validatesJSONPath`.
+                            Exactly one nested block is allowed with the structure
+                            below.
+                          items:
+                            properties:
+                              jsonpath:
+                                description: The JSON path to assert.
+                                type: string
+                              operator:
+                                description: The specific operator to use on the path.
+                                type: string
+                              targetvalue:
+                                description: Expected matching value.
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Type of assertion. **Note** Only some combinations
+                            of `type` and `operator` are valid (please refer to [Datadog
+                            documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                            Valid values are `body`, `header`, `statusCode`, `certificate`,
+                            `responseTime`, `property`, `recordEvery`, `recordSome`,
+                            `tlsVersion`, `minTlsVersion`, `latency`, `packetLossPercentage`,
+                            `packetsReceived`, `networkHop`, `receivedMessage`.
+                          type: string
+                      type: object
+                    type: array
+                  browserStep:
+                    description: Steps for browser tests.
+                    items:
+                      properties:
+                        allowFailure:
+                          description: Determines if the step should be allowed to
+                            fail.
+                          type: boolean
+                        forceElementUpdate:
+                          description: Force update of the "element" parameter for
+                            the step
+                          type: boolean
+                        isCritical:
+                          description: Determines whether or not to consider the entire
+                            test as failed if this step fails. Can be used only if
+                            `allow_failure` is `true`.
+                          type: boolean
+                        name:
+                          description: Name of the step.
+                          type: string
+                        params:
+                          description: Parameters for the step.
+                          items:
+                            properties:
+                              attribute:
+                                description: Name of the attribute to use for an "assert
+                                  attribute" step.
+                                type: string
+                              check:
+                                description: Check type to use for an assertion step.
+                                  Valid values are `equals`, `notEquals`, `contains`,
+                                  `notContains`, `startsWith`, `notStartsWith`, `greater`,
+                                  `lower`, `greaterEquals`, `lowerEquals`, `matchRegex`,
+                                  `between`, `isEmpty`, `notIsEmpty`.
+                                type: string
+                              clickType:
+                                description: Type of click to use for a "click" step.
+                                type: string
+                              code:
+                                description: Javascript code to use for the step.
+                                type: string
+                              delay:
+                                description: Delay between each key stroke for a "type
+                                  test" step.
+                                type: number
+                              element:
+                                description: Element to use for the step, json encoded
+                                  string.
+                                type: string
+                              elementUserLocator:
+                                description: Custom user selector to use for the step.
+                                items:
+                                  properties:
+                                    failTestOnCannotLocate:
+                                      type: boolean
+                                    value:
+                                      items:
+                                        properties:
+                                          type:
+                                            type: string
+                                          value:
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              email:
+                                description: Details of the email for an "assert email"
+                                  step.
+                                type: string
+                              file:
+                                description: For an "assert download" step.
+                                type: string
+                              files:
+                                description: Details of the files for an "upload files"
+                                  step, json encoded string.
+                                type: string
+                              modifiers:
+                                description: Modifier to use for a "press key" step.
+                                items:
+                                  type: string
+                                type: array
+                              playingTabId:
+                                description: ID of the tab to play the subtest.
+                                type: string
+                              request:
+                                description: Request for an API step.
+                                type: string
+                              subtestPublicId:
+                                description: ID of the Synthetics test to use as subtest.
+                                type: string
+                              value:
+                                description: Value of the step.
+                                type: string
+                              variable:
+                                description: Details of the variable to extract.
+                                items:
+                                  properties:
+                                    example:
+                                      description: Example of the extracted variable.
+                                      type: string
+                                    name:
+                                      description: Name of the extracted variable.
+                                      type: string
+                                  type: object
+                                type: array
+                              withClick:
+                                description: For "file upload" steps.
+                                type: boolean
+                              x:
+                                description: X coordinates for a "scroll step".
+                                type: number
+                              "y":
+                                description: Y coordinates for a "scroll step".
+                                type: number
+                            type: object
+                          type: array
+                        timeout:
+                          description: Used to override the default timeout of a step.
+                          type: number
+                        type:
+                          description: Type of the step. Valid values are `assertCurrentUrl`,
+                            `assertElementAttribute`, `assertElementContent`, `assertElementPresent`,
+                            `assertEmail`, `assertFileDownload`, `assertFromJavascript`,
+                            `assertPageContains`, `assertPageLacks`, `click`, `extractFromJavascript`,
+                            `extractVariable`, `goToEmailLink`, `goToUrl`, `goToUrlAndMeasureTti`,
+                            `hover`, `playSubTest`, `pressKey`, `refresh`, `runApiTest`,
+                            `scroll`, `selectOption`, `typeText`, `uploadFiles`, `wait`.
+                          type: string
+                      type: object
+                    type: array
+                  browserVariable:
+                    description: Variables used for a browser test steps. Multiple
+                      `variable` blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        example:
+                          description: Example for the variable.
+                          type: string
+                        id:
+                          description: ID of the global variable to use. This is actually
+                            only used (and required) in the case of using a variable
+                            of type `global`.
+                          type: string
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        pattern:
+                          description: Pattern of the variable.
+                          type: string
+                        type:
+                          description: Type of browser test variable. Valid values
+                            are `element`, `email`, `global`, `javascript`, `text`.
+                          type: string
+                      type: object
+                    type: array
+                  configVariable:
+                    description: Variables used for the test configuration. Multiple
+                      `config_variable` blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        example:
+                          description: Example for the variable.
+                          type: string
+                        id:
+                          description: When type = `global`, ID of the global variable
+                            to use.
+                          type: string
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        pattern:
+                          description: Pattern of the variable.
+                          type: string
+                        type:
+                          description: Type of test configuration variable. Valid
+                            values are `global`, `text`.
+                          type: string
+                      type: object
+                    type: array
+                  deviceIds:
+                    description: Required if `type = "browser"`. Array with the different
+                      device IDs used to run the test. Valid values are `laptop_large`,
+                      `tablet`, `mobile_small`, `chrome.laptop_large`, `chrome.tablet`,
+                      `chrome.mobile_small`, `firefox.laptop_large`, `firefox.tablet`,
+                      `firefox.mobile_small`, `edge.laptop_large`, `edge.tablet`,
+                      `edge.mobile_small`.
+                    items:
+                      type: string
+                    type: array
+                  locations:
+                    description: Array of locations used to run the test. Refer to
+                      [Datadog documentation](https://docs.datadoghq.com/synthetics/api_test/#request)
+                      for available locations (e.g. `aws:eu-central-1`).
+                    items:
+                      type: string
+                    type: array
+                  message:
+                    description: A message to include with notifications for this
+                      synthetics test. Email notifications can be sent to specific
+                      users by using the same `@username` notation as events.
+                    type: string
+                  name:
+                    description: Name of Datadog synthetics test.
+                    type: string
+                  optionsList:
+                    items:
+                      properties:
+                        acceptSelfSigned:
+                          description: For SSL test, whether or not the test should
+                            allow self signed certificates.
+                          type: boolean
+                        allowInsecure:
+                          description: Allows loading insecure content for an HTTP
+                            test.
+                          type: boolean
+                        checkCertificateRevocation:
+                          description: For SSL test, whether or not the test should
+                            fail on revoked certificate in stapled OCSP.
+                          type: boolean
+                        followRedirects:
+                          description: Determines whether or not the API HTTP test
+                            should follow redirects.
+                          type: boolean
+                        minFailureDuration:
+                          description: Minimum amount of time in failure required
+                            to trigger an alert. Default is `0`.
+                          type: number
+                        minLocationFailed:
+                          description: Minimum number of locations in failure required
+                            to trigger an alert. Default is `1`.
+                          type: number
+                        monitorName:
+                          description: The monitor name is used for the alert title
+                            as well as for all monitor dashboard widgets and SLOs.
+                          type: string
+                        monitorOptions:
+                          items:
+                            properties:
+                              renotifyInterval:
+                                description: Specify a renotification frequency.
+                                type: number
+                            type: object
+                          type: array
+                        monitorPriority:
+                          type: number
+                        noScreenshot:
+                          description: Prevents saving screenshots of the steps.
+                          type: boolean
+                        restrictedRoles:
+                          description: A list of role identifiers pulled from the
+                            Roles API to restrict read and write access.
+                          items:
+                            type: string
+                          type: array
+                        retry:
+                          items:
+                            properties:
+                              count:
+                                description: Number of retries needed to consider
+                                  a location as failed before sending a notification
+                                  alert.
+                                type: number
+                              interval:
+                                description: Interval between a failed test and the
+                                  next retry in milliseconds.
+                                type: number
+                            type: object
+                          type: array
+                        tickEvery:
+                          description: How often the test should run (in seconds).
+                          type: number
+                      type: object
+                    type: array
+                  requestBasicauth:
+                    description: The HTTP basic authentication credentials. Exactly
+                      one nested block is allowed with the structure below.
+                    items:
+                      properties:
+                        domain:
+                          description: Domain for `ntlm` authentication.
+                          type: string
+                        region:
+                          description: Region for `SIGV4` authentication.
+                          type: string
+                        serviceName:
+                          description: Service name for `SIGV4` authentication.
+                          type: string
+                        sessionToken:
+                          description: Session token for `SIGV4` authentication.
+                          type: string
+                        type:
+                          description: Type of basic authentication to use when performing
+                            the test.
+                          type: string
+                        username:
+                          description: Username for authentication.
+                          type: string
+                        workstation:
+                          description: Workstation for `ntlm` authentication.
+                          type: string
+                      type: object
+                    type: array
+                  requestClientCertificate:
+                    description: Client certificate to use when performing the test
+                      request. Exactly one nested block is allowed with the structure
+                      below.
+                    items:
+                      properties:
+                        cert:
+                          items:
+                            properties:
+                              filename:
+                                description: File name for the certificate.
+                                type: string
+                            type: object
+                          type: array
+                        key:
+                          items:
+                            properties:
+                              filename:
+                                description: File name for the certificate.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  requestDefinition:
+                    description: Required if `type = "api"`. The synthetics test request.
+                    items:
+                      properties:
+                        body:
+                          description: The request body.
+                          type: string
+                        dnsServer:
+                          description: DNS server to use for DNS tests (`subtype =
+                            "dns"`).
+                          type: string
+                        dnsServerPort:
+                          description: DNS server port to use for DNS tests.
+                          type: number
+                        host:
+                          description: Host name to perform the test with.
+                          type: string
+                        message:
+                          description: For UDP and websocket tests, message to send
+                            with the request.
+                          type: string
+                        method:
+                          description: The HTTP method. Valid values are `GET`, `POST`,
+                            `PATCH`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`.
+                          type: string
+                        noSavingResponseBody:
+                          description: Determines whether or not to save the response
+                            body.
+                          type: boolean
+                        numberOfPackets:
+                          description: Number of pings to use per test for ICMP tests
+                            (`subtype = "icmp"`) between 0 and 10.
+                          type: number
+                        port:
+                          description: Port to use when performing the test.
+                          type: number
+                        servername:
+                          description: For SSL tests, it specifies on which server
+                            you want to initiate the TLS handshake, allowing the server
+                            to present one of multiple possible certificates on the
+                            same IP address and TCP port number.
+                          type: string
+                        shouldTrackHops:
+                          description: This will turn on a traceroute probe to discover
+                            all gateways along the path to the host destination. For
+                            ICMP tests (`subtype = "icmp"`).
+                          type: boolean
+                        timeout:
+                          description: Timeout in seconds for the test. Defaults to
+                            `60`.
+                          type: number
+                        url:
+                          description: The URL to send the request to.
+                          type: string
+                      type: object
+                    type: array
+                  requestHeaders:
+                    additionalProperties:
+                      type: string
+                    description: Header name and value map.
+                    type: object
+                  requestProxy:
+                    description: The proxy to perform the test.
+                    items:
+                      properties:
+                        headers:
+                          additionalProperties:
+                            type: string
+                          description: Header name and value map.
+                          type: object
+                        url:
+                          description: URL of the proxy to perform the test.
+                          type: string
+                      type: object
+                    type: array
+                  requestQuery:
+                    additionalProperties:
+                      type: string
+                    description: Query arguments name and value map.
+                    type: object
+                  setCookie:
+                    description: Cookies to be used for a browser test request, using
+                      the [Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
+                      syntax.
+                    type: string
+                  status:
+                    description: Define whether you want to start (`live`) or pause
+                      (`paused`) a Synthetic test. Valid values are `live`, `paused`.
+                    type: string
+                  subtype:
+                    description: The subtype of the Synthetic API test. Defaults to
+                      `http`. Valid values are `http`, `ssl`, `tcp`, `dns`, `multi`,
+                      `icmp`, `udp`, `websocket`.
+                    type: string
+                  tags:
+                    description: A list of tags to associate with your synthetics
+                      test. This can help you categorize and filter tests in the manage
+                      synthetics page of the UI. Default is an empty list (`[]`).
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: Synthetics test type. Valid values are `api`, `browser`.
+                    type: string
+                type: object
+              managementPolicies:
+                default:
+                - '*'
+                description: 'THIS IS AN ALPHA FIELD. Do not use it in production.
+                  It is not honored unless the relevant Crossplane feature flag is
+                  enabled, and may be changed or removed without notice. ManagementPolicies
+                  specify the array of actions Crossplane is allowed to take on the
+                  managed and external resources. This field is planned to replace
+                  the DeletionPolicy field in a future release. Currently, both could
+                  be set independently and non-default values would be honored if
+                  the feature flag is enabled. If both are custom, the DeletionPolicy
+                  field will be ignored. See the design doc for more information:
+                  https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+                  and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md'
+                items:
+                  description: A ManagementAction represents an action that the Crossplane
+                    controllers can take on an external resource.
+                  enum:
+                  - Observe
+                  - Create
+                  - Update
+                  - Delete
+                  - LateInitialize
+                  - '*'
+                  type: string
+                type: array
+              providerConfigRef:
+                default:
+                  name: default
+                description: ProviderConfigReference specifies how the provider that
+                  will be used to create, observe, update, and delete this managed
+                  resource should be configured.
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              providerRef:
+                description: 'ProviderReference specifies the provider that will be
+                  used to create, observe, update, and delete this managed resource.
+                  Deprecated: Please use ProviderConfigReference, i.e. `providerConfigRef`'
+                properties:
+                  name:
+                    description: Name of the referenced object.
+                    type: string
+                  policy:
+                    description: Policies for referencing.
+                    properties:
+                      resolution:
+                        default: Required
+                        description: Resolution specifies whether resolution of this
+                          reference is required. The default is 'Required', which
+                          means the reconcile will fail if the reference cannot be
+                          resolved. 'Optional' means this reference will be a no-op
+                          if it cannot be resolved.
+                        enum:
+                        - Required
+                        - Optional
+                        type: string
+                      resolve:
+                        description: Resolve specifies when this reference should
+                          be resolved. The default is 'IfNotPresent', which will attempt
+                          to resolve the reference only when the corresponding field
+                          is not present. Use 'Always' to resolve the reference on
+                          every reconcile.
+                        enum:
+                        - Always
+                        - IfNotPresent
+                        type: string
+                    type: object
+                required:
+                - name
+                type: object
+              publishConnectionDetailsTo:
+                description: PublishConnectionDetailsTo specifies the connection secret
+                  config which contains a name, metadata and a reference to secret
+                  store config to which any connection details for this managed resource
+                  should be written. Connection details frequently include the endpoint,
+                  username, and password required to connect to the managed resource.
+                properties:
+                  configRef:
+                    default:
+                      name: default
+                    description: SecretStoreConfigRef specifies which secret store
+                      config should be used for this ConnectionSecret.
+                    properties:
+                      name:
+                        description: Name of the referenced object.
+                        type: string
+                      policy:
+                        description: Policies for referencing.
+                        properties:
+                          resolution:
+                            default: Required
+                            description: Resolution specifies whether resolution of
+                              this reference is required. The default is 'Required',
+                              which means the reconcile will fail if the reference
+                              cannot be resolved. 'Optional' means this reference
+                              will be a no-op if it cannot be resolved.
+                            enum:
+                            - Required
+                            - Optional
+                            type: string
+                          resolve:
+                            description: Resolve specifies when this reference should
+                              be resolved. The default is 'IfNotPresent', which will
+                              attempt to resolve the reference only when the corresponding
+                              field is not present. Use 'Always' to resolve the reference
+                              on every reconcile.
+                            enum:
+                            - Always
+                            - IfNotPresent
+                            type: string
+                        type: object
+                    required:
+                    - name
+                    type: object
+                  metadata:
+                    description: Metadata is the metadata for connection secret.
+                    properties:
+                      annotations:
+                        additionalProperties:
+                          type: string
+                        description: Annotations are the annotations to be added to
+                          connection secret. - For Kubernetes secrets, this will be
+                          used as "metadata.annotations". - It is up to Secret Store
+                          implementation for others store types.
+                        type: object
+                      labels:
+                        additionalProperties:
+                          type: string
+                        description: Labels are the labels/tags to be added to connection
+                          secret. - For Kubernetes secrets, this will be used as "metadata.labels".
+                          - It is up to Secret Store implementation for others store
+                          types.
+                        type: object
+                      type:
+                        description: Type is the SecretType for the connection secret.
+                          - Only valid for Kubernetes Secret Stores.
+                        type: string
+                    type: object
+                  name:
+                    description: Name is the name of the connection secret.
+                    type: string
+                required:
+                - name
+                type: object
+              writeConnectionSecretToRef:
+                description: WriteConnectionSecretToReference specifies the namespace
+                  and name of a Secret to which any connection details for this managed
+                  resource should be written. Connection details frequently include
+                  the endpoint, username, and password required to connect to the
+                  managed resource. This field is planned to be replaced in a future
+                  release in favor of PublishConnectionDetailsTo. Currently, both
+                  could be set independently and connection details would be published
+                  to both without affecting each other.
+                properties:
+                  name:
+                    description: Name of the secret.
+                    type: string
+                  namespace:
+                    description: Namespace of the secret.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
+            required:
+            - forProvider
+            type: object
+            x-kubernetes-validations:
+            - message: locations is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.locations)
+                || has(self.initProvider.locations)'
+            - message: name is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.name)
+                || has(self.initProvider.name)'
+            - message: status is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.status)
+                || has(self.initProvider.status)'
+            - message: type is a required parameter
+              rule: '!(''*'' in self.managementPolicies || ''Create'' in self.managementPolicies
+                || ''Update'' in self.managementPolicies) || has(self.forProvider.type)
+                || has(self.initProvider.type)'
+          status:
+            description: TestStatus defines the observed state of Test.
+            properties:
+              atProvider:
+                properties:
+                  apiStep:
+                    description: Steps for multistep api tests
+                    items:
+                      properties:
+                        allowFailure:
+                          description: Determines whether or not to continue with
+                            test if this step fails.
+                          type: boolean
+                        assertion:
+                          description: Assertions used for the test. Multiple `assertion`
+                            blocks are allowed with the structure below.
+                          items:
+                            properties:
+                              operator:
+                                description: Assertion operator. **Note** Only some
+                                  combinations of `type` and `operator` are valid
+                                  (please refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                                type: string
+                              property:
+                                description: If assertion type is `header`, this is
+                                  the header name.
+                                type: string
+                              target:
+                                description: Expected value. Depends on the assertion
+                                  type, refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)
+                                  for details.
+                                type: string
+                              targetjsonpath:
+                                description: Expected structure if `operator` is `validatesJSONPath`.
+                                  Exactly one nested block is allowed with the structure
+                                  below.
+                                items:
+                                  properties:
+                                    jsonpath:
+                                      description: The JSON path to assert.
+                                      type: string
+                                    operator:
+                                      description: The specific operator to use on
+                                        the path.
+                                      type: string
+                                    targetvalue:
+                                      description: Expected matching value.
+                                      type: string
+                                  type: object
+                                type: array
+                              type:
+                                description: Type of assertion. **Note** Only some
+                                  combinations of `type` and `operator` are valid
+                                  (please refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                                  Valid values are `body`, `header`, `statusCode`,
+                                  `certificate`, `responseTime`, `property`, `recordEvery`,
+                                  `recordSome`, `tlsVersion`, `minTlsVersion`, `latency`,
+                                  `packetLossPercentage`, `packetsReceived`, `networkHop`,
+                                  `receivedMessage`.
+                                type: string
+                            type: object
+                          type: array
+                        extractedValue:
+                          description: Values to parse and save as variables from
+                            the response.
+                          items:
+                            properties:
+                              field:
+                                description: When type is `http_header`, name of the
+                                  header to use to extract the value.
+                                type: string
+                              name:
+                                type: string
+                              parser:
+                                items:
+                                  properties:
+                                    type:
+                                      description: Type of parser for a Synthetics
+                                        global variable from a synthetics test. Valid
+                                        values are `raw`, `json_path`, `regex`, `x_path`.
+                                      type: string
+                                    value:
+                                      description: Regex or JSON path used for the
+                                        parser. Not used with type `raw`.
+                                      type: string
+                                  type: object
+                                type: array
+                              type:
+                                description: Property of the Synthetics Test Response
+                                  to use for the variable. Valid values are `http_body`,
+                                  `http_header`.
+                                type: string
+                            type: object
+                          type: array
+                        isCritical:
+                          description: Determines whether or not to consider the entire
+                            test as failed if this step fails. Can be used only if
+                            `allow_failure` is `true`.
+                          type: boolean
+                        name:
+                          description: The name of the step.
+                          type: string
+                        requestBasicauth:
+                          description: The HTTP basic authentication credentials.
+                            Exactly one nested block is allowed with the structure
+                            below.
+                          items:
+                            properties:
+                              domain:
+                                description: Domain for `ntlm` authentication.
+                                type: string
+                              region:
+                                description: Region for `SIGV4` authentication.
+                                type: string
+                              serviceName:
+                                description: Service name for `SIGV4` authentication.
+                                type: string
+                              sessionToken:
+                                description: Session token for `SIGV4` authentication.
+                                type: string
+                              type:
+                                description: Type of basic authentication to use when
+                                  performing the test.
+                                type: string
+                              username:
+                                description: Username for authentication.
+                                type: string
+                              workstation:
+                                description: Workstation for `ntlm` authentication.
+                                type: string
+                            type: object
+                          type: array
+                        requestClientCertificate:
+                          description: Client certificate to use when performing the
+                            test request. Exactly one nested block is allowed with
+                            the structure below.
+                          items:
+                            properties:
+                              cert:
+                                items:
+                                  properties:
+                                    filename:
+                                      description: File name for the certificate.
+                                      type: string
+                                  type: object
+                                type: array
+                              key:
+                                items:
+                                  properties:
+                                    filename:
+                                      description: File name for the certificate.
+                                      type: string
+                                  type: object
+                                type: array
+                            type: object
+                          type: array
+                        requestDefinition:
+                          description: The request for the api step.
+                          items:
+                            properties:
+                              allowInsecure:
+                                description: Allows loading insecure content for an
+                                  HTTP test.
+                                type: boolean
+                              body:
+                                description: The request body.
+                                type: string
+                              dnsServer:
+                                description: DNS server to use for DNS tests (`subtype
+                                  = "dns"`).
+                                type: string
+                              dnsServerPort:
+                                description: DNS server port to use for DNS tests.
+                                type: number
+                              followRedirects:
+                                description: Determines whether or not the API HTTP
+                                  test should follow redirects.
+                                type: boolean
+                              host:
+                                description: Host name to perform the test with.
+                                type: string
+                              message:
+                                description: For UDP and websocket tests, message
+                                  to send with the request.
+                                type: string
+                              method:
+                                description: The HTTP method. Valid values are `GET`,
+                                  `POST`, `PATCH`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`.
+                                type: string
+                              noSavingResponseBody:
+                                description: Determines whether or not to save the
+                                  response body.
+                                type: boolean
+                              numberOfPackets:
+                                description: Number of pings to use per test for ICMP
+                                  tests (`subtype = "icmp"`) between 0 and 10.
+                                type: number
+                              port:
+                                description: Port to use when performing the test.
+                                type: number
+                              servername:
+                                description: For SSL tests, it specifies on which
+                                  server you want to initiate the TLS handshake, allowing
+                                  the server to present one of multiple possible certificates
+                                  on the same IP address and TCP port number.
+                                type: string
+                              shouldTrackHops:
+                                description: This will turn on a traceroute probe
+                                  to discover all gateways along the path to the host
+                                  destination. For ICMP tests (`subtype = "icmp"`).
+                                type: boolean
+                              timeout:
+                                description: Timeout in seconds for the test. Defaults
+                                  to `60`.
+                                type: number
+                              url:
+                                description: The URL to send the request to.
+                                type: string
+                            type: object
+                          type: array
+                        requestHeaders:
+                          additionalProperties:
+                            type: string
+                          description: Header name and value map.
+                          type: object
+                        requestProxy:
+                          description: The proxy to perform the test.
+                          items:
+                            properties:
+                              headers:
+                                additionalProperties:
+                                  type: string
+                                description: Header name and value map.
+                                type: object
+                              url:
+                                description: URL of the proxy to perform the test.
+                                type: string
+                            type: object
+                          type: array
+                        requestQuery:
+                          additionalProperties:
+                            type: string
+                          description: Query arguments name and value map.
+                          type: object
+                        retry:
+                          items:
+                            properties:
+                              count:
+                                description: Number of retries needed to consider
+                                  a location as failed before sending a notification
+                                  alert.
+                                type: number
+                              interval:
+                                description: Interval between a failed test and the
+                                  next retry in milliseconds.
+                                type: number
+                            type: object
+                          type: array
+                        subtype:
+                          description: The subtype of the Synthetic multistep API
+                            test step. Valid values are `http`.
+                          type: string
+                      type: object
+                    type: array
+                  assertion:
+                    description: Assertions used for the test. Multiple `assertion`
+                      blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        operator:
+                          description: Assertion operator. **Note** Only some combinations
+                            of `type` and `operator` are valid (please refer to [Datadog
+                            documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                          type: string
+                        property:
+                          description: If assertion type is `header`, this is the
+                            header name.
+                          type: string
+                        target:
+                          description: Expected value. Depends on the assertion type,
+                            refer to [Datadog documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)
+                            for details.
+                          type: string
+                        targetjsonpath:
+                          description: Expected structure if `operator` is `validatesJSONPath`.
+                            Exactly one nested block is allowed with the structure
+                            below.
+                          items:
+                            properties:
+                              jsonpath:
+                                description: The JSON path to assert.
+                                type: string
+                              operator:
+                                description: The specific operator to use on the path.
+                                type: string
+                              targetvalue:
+                                description: Expected matching value.
+                                type: string
+                            type: object
+                          type: array
+                        type:
+                          description: Type of assertion. **Note** Only some combinations
+                            of `type` and `operator` are valid (please refer to [Datadog
+                            documentation](https://docs.datadoghq.com/api/latest/synthetics/#create-a-test)).
+                            Valid values are `body`, `header`, `statusCode`, `certificate`,
+                            `responseTime`, `property`, `recordEvery`, `recordSome`,
+                            `tlsVersion`, `minTlsVersion`, `latency`, `packetLossPercentage`,
+                            `packetsReceived`, `networkHop`, `receivedMessage`.
+                          type: string
+                      type: object
+                    type: array
+                  browserStep:
+                    description: Steps for browser tests.
+                    items:
+                      properties:
+                        allowFailure:
+                          description: Determines if the step should be allowed to
+                            fail.
+                          type: boolean
+                        forceElementUpdate:
+                          description: Force update of the "element" parameter for
+                            the step
+                          type: boolean
+                        isCritical:
+                          description: Determines whether or not to consider the entire
+                            test as failed if this step fails. Can be used only if
+                            `allow_failure` is `true`.
+                          type: boolean
+                        name:
+                          description: Name of the step.
+                          type: string
+                        params:
+                          description: Parameters for the step.
+                          items:
+                            properties:
+                              attribute:
+                                description: Name of the attribute to use for an "assert
+                                  attribute" step.
+                                type: string
+                              check:
+                                description: Check type to use for an assertion step.
+                                  Valid values are `equals`, `notEquals`, `contains`,
+                                  `notContains`, `startsWith`, `notStartsWith`, `greater`,
+                                  `lower`, `greaterEquals`, `lowerEquals`, `matchRegex`,
+                                  `between`, `isEmpty`, `notIsEmpty`.
+                                type: string
+                              clickType:
+                                description: Type of click to use for a "click" step.
+                                type: string
+                              code:
+                                description: Javascript code to use for the step.
+                                type: string
+                              delay:
+                                description: Delay between each key stroke for a "type
+                                  test" step.
+                                type: number
+                              element:
+                                description: Element to use for the step, json encoded
+                                  string.
+                                type: string
+                              elementUserLocator:
+                                description: Custom user selector to use for the step.
+                                items:
+                                  properties:
+                                    failTestOnCannotLocate:
+                                      type: boolean
+                                    value:
+                                      items:
+                                        properties:
+                                          type:
+                                            type: string
+                                          value:
+                                            type: string
+                                        type: object
+                                      type: array
+                                  type: object
+                                type: array
+                              email:
+                                description: Details of the email for an "assert email"
+                                  step.
+                                type: string
+                              file:
+                                description: For an "assert download" step.
+                                type: string
+                              files:
+                                description: Details of the files for an "upload files"
+                                  step, json encoded string.
+                                type: string
+                              modifiers:
+                                description: Modifier to use for a "press key" step.
+                                items:
+                                  type: string
+                                type: array
+                              playingTabId:
+                                description: ID of the tab to play the subtest.
+                                type: string
+                              request:
+                                description: Request for an API step.
+                                type: string
+                              subtestPublicId:
+                                description: ID of the Synthetics test to use as subtest.
+                                type: string
+                              value:
+                                description: Value of the step.
+                                type: string
+                              variable:
+                                description: Details of the variable to extract.
+                                items:
+                                  properties:
+                                    example:
+                                      description: Example of the extracted variable.
+                                      type: string
+                                    name:
+                                      description: Name of the extracted variable.
+                                      type: string
+                                  type: object
+                                type: array
+                              withClick:
+                                description: For "file upload" steps.
+                                type: boolean
+                              x:
+                                description: X coordinates for a "scroll step".
+                                type: number
+                              "y":
+                                description: Y coordinates for a "scroll step".
+                                type: number
+                            type: object
+                          type: array
+                        timeout:
+                          description: Used to override the default timeout of a step.
+                          type: number
+                        type:
+                          description: Type of the step. Valid values are `assertCurrentUrl`,
+                            `assertElementAttribute`, `assertElementContent`, `assertElementPresent`,
+                            `assertEmail`, `assertFileDownload`, `assertFromJavascript`,
+                            `assertPageContains`, `assertPageLacks`, `click`, `extractFromJavascript`,
+                            `extractVariable`, `goToEmailLink`, `goToUrl`, `goToUrlAndMeasureTti`,
+                            `hover`, `playSubTest`, `pressKey`, `refresh`, `runApiTest`,
+                            `scroll`, `selectOption`, `typeText`, `uploadFiles`, `wait`.
+                          type: string
+                      type: object
+                    type: array
+                  browserVariable:
+                    description: Variables used for a browser test steps. Multiple
+                      `variable` blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        example:
+                          description: Example for the variable.
+                          type: string
+                        id:
+                          description: ID of the global variable to use. This is actually
+                            only used (and required) in the case of using a variable
+                            of type `global`.
+                          type: string
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        pattern:
+                          description: Pattern of the variable.
+                          type: string
+                        type:
+                          description: Type of browser test variable. Valid values
+                            are `element`, `email`, `global`, `javascript`, `text`.
+                          type: string
+                      type: object
+                    type: array
+                  configVariable:
+                    description: Variables used for the test configuration. Multiple
+                      `config_variable` blocks are allowed with the structure below.
+                    items:
+                      properties:
+                        example:
+                          description: Example for the variable.
+                          type: string
+                        id:
+                          description: When type = `global`, ID of the global variable
+                            to use.
+                          type: string
+                        name:
+                          description: Name of the variable.
+                          type: string
+                        pattern:
+                          description: Pattern of the variable.
+                          type: string
+                        type:
+                          description: Type of test configuration variable. Valid
+                            values are `global`, `text`.
+                          type: string
+                      type: object
+                    type: array
+                  deviceIds:
+                    description: Required if `type = "browser"`. Array with the different
+                      device IDs used to run the test. Valid values are `laptop_large`,
+                      `tablet`, `mobile_small`, `chrome.laptop_large`, `chrome.tablet`,
+                      `chrome.mobile_small`, `firefox.laptop_large`, `firefox.tablet`,
+                      `firefox.mobile_small`, `edge.laptop_large`, `edge.tablet`,
+                      `edge.mobile_small`.
+                    items:
+                      type: string
+                    type: array
+                  id:
+                    type: string
+                  locations:
+                    description: Array of locations used to run the test. Refer to
+                      [Datadog documentation](https://docs.datadoghq.com/synthetics/api_test/#request)
+                      for available locations (e.g. `aws:eu-central-1`).
+                    items:
+                      type: string
+                    type: array
+                  message:
+                    description: A message to include with notifications for this
+                      synthetics test. Email notifications can be sent to specific
+                      users by using the same `@username` notation as events.
+                    type: string
+                  monitorId:
+                    description: ID of the monitor associated with the Datadog synthetics
+                      test.
+                    type: number
+                  name:
+                    description: Name of Datadog synthetics test.
+                    type: string
+                  optionsList:
+                    items:
+                      properties:
+                        acceptSelfSigned:
+                          description: For SSL test, whether or not the test should
+                            allow self signed certificates.
+                          type: boolean
+                        allowInsecure:
+                          description: Allows loading insecure content for an HTTP
+                            test.
+                          type: boolean
+                        checkCertificateRevocation:
+                          description: For SSL test, whether or not the test should
+                            fail on revoked certificate in stapled OCSP.
+                          type: boolean
+                        followRedirects:
+                          description: Determines whether or not the API HTTP test
+                            should follow redirects.
+                          type: boolean
+                        minFailureDuration:
+                          description: Minimum amount of time in failure required
+                            to trigger an alert. Default is `0`.
+                          type: number
+                        minLocationFailed:
+                          description: Minimum number of locations in failure required
+                            to trigger an alert. Default is `1`.
+                          type: number
+                        monitorName:
+                          description: The monitor name is used for the alert title
+                            as well as for all monitor dashboard widgets and SLOs.
+                          type: string
+                        monitorOptions:
+                          items:
+                            properties:
+                              renotifyInterval:
+                                description: Specify a renotification frequency.
+                                type: number
+                            type: object
+                          type: array
+                        monitorPriority:
+                          type: number
+                        noScreenshot:
+                          description: Prevents saving screenshots of the steps.
+                          type: boolean
+                        restrictedRoles:
+                          description: A list of role identifiers pulled from the
+                            Roles API to restrict read and write access.
+                          items:
+                            type: string
+                          type: array
+                        retry:
+                          items:
+                            properties:
+                              count:
+                                description: Number of retries needed to consider
+                                  a location as failed before sending a notification
+                                  alert.
+                                type: number
+                              interval:
+                                description: Interval between a failed test and the
+                                  next retry in milliseconds.
+                                type: number
+                            type: object
+                          type: array
+                        tickEvery:
+                          description: How often the test should run (in seconds).
+                          type: number
+                      type: object
+                    type: array
+                  requestBasicauth:
+                    description: The HTTP basic authentication credentials. Exactly
+                      one nested block is allowed with the structure below.
+                    items:
+                      properties:
+                        domain:
+                          description: Domain for `ntlm` authentication.
+                          type: string
+                        region:
+                          description: Region for `SIGV4` authentication.
+                          type: string
+                        serviceName:
+                          description: Service name for `SIGV4` authentication.
+                          type: string
+                        sessionToken:
+                          description: Session token for `SIGV4` authentication.
+                          type: string
+                        type:
+                          description: Type of basic authentication to use when performing
+                            the test.
+                          type: string
+                        username:
+                          description: Username for authentication.
+                          type: string
+                        workstation:
+                          description: Workstation for `ntlm` authentication.
+                          type: string
+                      type: object
+                    type: array
+                  requestClientCertificate:
+                    description: Client certificate to use when performing the test
+                      request. Exactly one nested block is allowed with the structure
+                      below.
+                    items:
+                      properties:
+                        cert:
+                          items:
+                            properties:
+                              filename:
+                                description: File name for the certificate.
+                                type: string
+                            type: object
+                          type: array
+                        key:
+                          items:
+                            properties:
+                              filename:
+                                description: File name for the certificate.
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
+                  requestDefinition:
+                    description: Required if `type = "api"`. The synthetics test request.
+                    items:
+                      properties:
+                        body:
+                          description: The request body.
+                          type: string
+                        dnsServer:
+                          description: DNS server to use for DNS tests (`subtype =
+                            "dns"`).
+                          type: string
+                        dnsServerPort:
+                          description: DNS server port to use for DNS tests.
+                          type: number
+                        host:
+                          description: Host name to perform the test with.
+                          type: string
+                        message:
+                          description: For UDP and websocket tests, message to send
+                            with the request.
+                          type: string
+                        method:
+                          description: The HTTP method. Valid values are `GET`, `POST`,
+                            `PATCH`, `PUT`, `DELETE`, `HEAD`, `OPTIONS`.
+                          type: string
+                        noSavingResponseBody:
+                          description: Determines whether or not to save the response
+                            body.
+                          type: boolean
+                        numberOfPackets:
+                          description: Number of pings to use per test for ICMP tests
+                            (`subtype = "icmp"`) between 0 and 10.
+                          type: number
+                        port:
+                          description: Port to use when performing the test.
+                          type: number
+                        servername:
+                          description: For SSL tests, it specifies on which server
+                            you want to initiate the TLS handshake, allowing the server
+                            to present one of multiple possible certificates on the
+                            same IP address and TCP port number.
+                          type: string
+                        shouldTrackHops:
+                          description: This will turn on a traceroute probe to discover
+                            all gateways along the path to the host destination. For
+                            ICMP tests (`subtype = "icmp"`).
+                          type: boolean
+                        timeout:
+                          description: Timeout in seconds for the test. Defaults to
+                            `60`.
+                          type: number
+                        url:
+                          description: The URL to send the request to.
+                          type: string
+                      type: object
+                    type: array
+                  requestHeaders:
+                    additionalProperties:
+                      type: string
+                    description: Header name and value map.
+                    type: object
+                  requestProxy:
+                    description: The proxy to perform the test.
+                    items:
+                      properties:
+                        headers:
+                          additionalProperties:
+                            type: string
+                          description: Header name and value map.
+                          type: object
+                        url:
+                          description: URL of the proxy to perform the test.
+                          type: string
+                      type: object
+                    type: array
+                  requestQuery:
+                    additionalProperties:
+                      type: string
+                    description: Query arguments name and value map.
+                    type: object
+                  setCookie:
+                    description: Cookies to be used for a browser test request, using
+                      the [Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie)
+                      syntax.
+                    type: string
+                  status:
+                    description: Define whether you want to start (`live`) or pause
+                      (`paused`) a Synthetic test. Valid values are `live`, `paused`.
+                    type: string
+                  subtype:
+                    description: The subtype of the Synthetic API test. Defaults to
+                      `http`. Valid values are `http`, `ssl`, `tcp`, `dns`, `multi`,
+                      `icmp`, `udp`, `websocket`.
+                    type: string
+                  tags:
+                    description: A list of tags to associate with your synthetics
+                      test. This can help you categorize and filter tests in the manage
+                      synthetics page of the UI. Default is an empty list (`[]`).
+                    items:
+                      type: string
+                    type: array
+                  type:
+                    description: Synthetics test type. Valid values are `api`, `browser`.
+                    type: string
+                type: object
+              conditions:
+                description: Conditions of the resource.
+                items:
+                  description: A Condition that may apply to a resource.
+                  properties:
+                    lastTransitionTime:
+                      description: LastTransitionTime is the last time this condition
+                        transitioned from one status to another.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A Message containing details about this condition's
+                        last transition from one status to another, if any.
+                      type: string
+                    reason:
+                      description: A Reason for this condition's last transition from
+                        one status to another.
+                      type: string
+                    status:
+                      description: Status of this condition; is it currently True,
+                        False, or Unknown?
+                      type: string
+                    type:
+                      description: Type of this condition. At most one of each condition
+                        type may apply to a resource at any point in time.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

@@ -17,7 +17,7 @@ limitations under the License.
 package monitor
 
 import (
-	tjconfig "github.com/crossplane/terrajet/pkg/config"
+	tjconfig "github.com/upbound/upjet/pkg/config"
 )
 
 // Configure configures the monitor group
@@ -36,7 +36,7 @@ func Configure(p *tjconfig.Provider) {
 		r.Kind = "ServiceLevelObjective"
 		r.ShortGroup = "monitor"
 		// NOTE(ytsarev): cross reference will fail here until
-		// https://github.com/crossplane/terrajet/issues/277 is solved
+		// https://github.com/upbound/upjet/issues/277 is solved
 		// r.References["monitor_ids"] = config.Reference{
 		//	Type: "Monitor",
 		// }

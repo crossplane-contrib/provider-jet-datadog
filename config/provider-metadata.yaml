@@ -1,0 +1,1085 @@
+name: DataDog/datadog
+resources:
+    Resource datadog_synthetics_test - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog synthetics test resource. This can be used to create and manage Datadog synthetics test.
+        name: Resource datadog_synthetics_test - terraform-provider-datadog
+        title: Resource datadog_synthetics_test - terraform-provider-datadog
+        argumentDocs:
+            accept_self_signed: (Boolean) For SSL test, whether or not the test should allow self signed certificates.
+            access_key: (String, Sensitive) Access key for SIGV4 authentication.
+            allow_failure: (Boolean) Determines whether or not to continue with test if this step fails.
+            allow_insecure: (Boolean) Allows loading insecure content for an HTTP test.
+            api_step: (Block List) Steps for multistep api tests (see below for nested schema)
+            assertion: (Block List) Assertions used for the test. Multiple assertion blocks are allowed with the structure below. (see below for nested schema)
+            attribute: (String) Name of the attribute to use for an "assert attribute" step.
+            body: (String) The request body.
+            browser_step: (Block List) Steps for browser tests. (see below for nested schema)
+            browser_variable: (Block List) Variables used for a browser test steps. Multiple variable blocks are allowed with the structure below. (see below for nested schema)
+            cert: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            check: (String) Check type to use for an assertion step. Valid values are equals, notEquals, contains, notContains, startsWith, notStartsWith, greater, lower, greaterEquals, lowerEquals, matchRegex, between, isEmpty, notIsEmpty.
+            check_certificate_revocation: (Boolean) For SSL test, whether or not the test should fail on revoked certificate in stapled OCSP.
+            click_type: (String) Type of click to use for a "click" step.
+            code: (String) Javascript code to use for the step.
+            config_variable: (Block List) Variables used for the test configuration. Multiple config_variable blocks are allowed with the structure below. (see below for nested schema)
+            content: (String, Sensitive) Content of the certificate.
+            count: (Number) Number of retries needed to consider a location as failed before sending a notification alert.
+            delay: (Number) Delay between each key stroke for a "type test" step.
+            device_ids: (List of String) Required if type = "browser". Array with the different device IDs used to run the test. Valid values are laptop_large, tablet, mobile_small, chrome.laptop_large, chrome.tablet, chrome.mobile_small, firefox.laptop_large, firefox.tablet, firefox.mobile_small, edge.laptop_large, edge.tablet, edge.mobile_small.
+            dns_server: (String) DNS server to use for DNS tests (subtype = "dns").
+            dns_server_port: (Number) DNS server port to use for DNS tests.
+            domain: (String) Domain for ntlm authentication.
+            element: (String) Element to use for the step, json encoded string.
+            element_user_locator: '(Block List, Max: 1) Custom user selector to use for the step. (see below for nested schema)'
+            email: (String) Details of the email for an "assert email" step.
+            example: (String) Example of the extracted variable.
+            extracted_value: (Block List) Values to parse and save as variables from the response. (see below for nested schema)
+            fail_test_on_cannot_locate: (Boolean)
+            field: (String) When type is http_header, name of the header to use to extract the value.
+            file: (String) For an "assert download" step.
+            filename: (String) File name for the certificate.
+            files: (String) Details of the files for an "upload files" step, json encoded string.
+            follow_redirects: (Boolean) Determines whether or not the API HTTP test should follow redirects.
+            force_element_update: (Boolean) Force update of the "element" parameter for the step
+            headers: (Map of String) Header name and value map.
+            host: (String) Host name to perform the test with.
+            id: (String) The ID of this resource.
+            interval: (Number) Interval between a failed test and the next retry in milliseconds.
+            is_critical: (Boolean) Determines whether or not to consider the entire test as failed if this step fails. Can be used only if allow_failure is true.
+            jsonpath: (String) The JSON path to assert.
+            key: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            locations: (Set of String) Array of locations used to run the test. Refer to Datadog documentation for available locations (e.g. aws:eu-central-1).
+            message: (String) A message to include with notifications for this synthetics test. Email notifications can be sent to specific users by using the same @username notation as events.
+            method: (String) The HTTP method. Valid values are GET, POST, PATCH, PUT, DELETE, HEAD, OPTIONS.
+            min_failure_duration: (Number) Minimum amount of time in failure required to trigger an alert. Default is 0.
+            min_location_failed: (Number) Minimum number of locations in failure required to trigger an alert. Default is 1.
+            modifiers: (List of String) Modifier to use for a "press key" step.
+            monitor_id: (Number) ID of the monitor associated with the Datadog synthetics test.
+            monitor_name: (String) The monitor name is used for the alert title as well as for all monitor dashboard widgets and SLOs.
+            monitor_options: '(Block List, Max: 1) (see below for nested schema)'
+            monitor_priority: (Number)
+            name: (String) Name of Datadog synthetics test.
+            no_saving_response_body: (Boolean) Determines whether or not to save the response body.
+            no_screenshot: (Boolean) Prevents saving screenshots of the steps.
+            number_of_packets: (Number) Number of pings to use per test for ICMP tests (subtype = "icmp") between 0 and 10.
+            operator: (String) Assertion operator. Note Only some combinations of type and operator are valid (please refer to Datadog documentation).
+            options_list: '(Block List, Max: 1) (see below for nested schema)'
+            params: '(Block List, Min: 1, Max: 1) Parameters for the step. (see below for nested schema)'
+            parser: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            password: (String, Sensitive) Password for authentication.
+            pattern: (String) Pattern of the variable.
+            playing_tab_id: (String) ID of the tab to play the subtest.
+            port: (Number) Port to use when performing the test.
+            property: (String) If assertion type is header, this is the header name.
+            region: (String) Region for SIGV4 authentication.
+            renotify_interval: (Number) Specify a renotification frequency.
+            request: (String) Request for an API step.
+            request_basicauth: '(Block List, Max: 1) The HTTP basic authentication credentials. Exactly one nested block is allowed with the structure below. (see below for nested schema)'
+            request_client_certificate: '(Block List, Max: 1) Client certificate to use when performing the test request. Exactly one nested block is allowed with the structure below. (see below for nested schema)'
+            request_definition: '(Block List, Max: 1) Required if type = "api". The synthetics test request. (see below for nested schema)'
+            request_headers: (Map of String) Header name and value map.
+            request_proxy: '(Block List, Max: 1) The proxy to perform the test. (see below for nested schema)'
+            request_query: (Map of String) Query arguments name and value map.
+            restricted_roles: (Set of String) A list of role identifiers pulled from the Roles API to restrict read and write access.
+            retry: '(Block List, Max: 1) (see below for nested schema)'
+            secret_key: (String, Sensitive) Secret key for SIGV4 authentication.
+            servername: (String) For SSL tests, it specifies on which server you want to initiate the TLS handshake, allowing the server to present one of multiple possible certificates on the same IP address and TCP port number.
+            service_name: (String) Service name for SIGV4 authentication.
+            session_token: (String) Session token for SIGV4 authentication.
+            set_cookie: (String) Cookies to be used for a browser test request, using the Set-Cookie syntax.
+            should_track_hops: (Boolean) This will turn on a traceroute probe to discover all gateways along the path to the host destination. For ICMP tests (subtype = "icmp").
+            status: (String) Define whether you want to start (live) or pause (paused) a Synthetic test. Valid values are live, paused.
+            subtest_public_id: (String) ID of the Synthetics test to use as subtest.
+            subtype: (String) The subtype of the Synthetic API test. Defaults to http. Valid values are http, ssl, tcp, dns, multi, icmp, udp, websocket.
+            tags: (List of String) A list of tags to associate with your synthetics test. This can help you categorize and filter tests in the manage synthetics page of the UI. Default is an empty list ([]).
+            target: (String) Expected value. Depends on the assertion type, refer to Datadog documentation for details.
+            targetjsonpath: '(Block List, Max: 1) Expected structure if operator is validatesJSONPath. Exactly one nested block is allowed with the structure below. (see below for nested schema)'
+            targetvalue: (String) Expected matching value.
+            tick_every: (Number) How often the test should run (in seconds).
+            timeout: (Number) Timeout in seconds for the test. Defaults to 60.
+            type: (String) Synthetics test type. Valid values are api, browser.
+            url: (String) The URL to send the request to.
+            username: (String) Username for authentication.
+            value: (String) Regex or JSON path used for the parser. Not used with type raw.
+            variable: '(Block List, Max: 1) Details of the variable to extract. (see below for nested schema)'
+            with_click: (Boolean) For "file upload" steps.
+            workstation: (String) Workstation for ntlm authentication.
+            x: (Number) X coordinates for a "scroll step".
+            "y": (Number) Y coordinates for a "scroll step".
+        importStatements:
+            - |-
+              # Synthetics tests can be imported using their public string ID, e.g.
+              terraform import datadog_synthetics_test.fizz abc-123-xyz
+    datadog_api_key Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog API Key resource. This can be used to create and manage Datadog API Keys.
+        name: datadog_api_key Resource - terraform-provider-datadog
+        title: datadog_api_key Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            key: (String, Sensitive) The value of the API Key.
+            name: (String) Name for API Key.
+        importStatements:
+            - terraform import datadog_api_key.foo 11111111-2222-3333-4444-555555555555
+    datadog_application_key Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Application Key resource. This can be used to create and manage Datadog Application Keys.
+        name: datadog_application_key Resource - terraform-provider-datadog
+        title: datadog_application_key Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            key: (String, Sensitive) The value of the Application Key.
+            name: (String) Name for Application Key.
+        importStatements:
+            - terraform import datadog_application_key.foo 11111111-2222-3333-4444-555555555555
+    datadog_authn_mapping Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog AuthN Mappings resource. This feature lets you automatically assign roles to users based on their SAML attributes.
+        name: datadog_authn_mapping Resource - terraform-provider-datadog
+        title: datadog_authn_mapping Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            key: (String) Identity provider key.
+            role: (String) The ID of a role to attach to all users with the corresponding key and value.
+            value: (String) Identity provider value.
+        importStatements:
+            - |-
+              # AuthN mappings can be imported using their ID, e.g.
+              terraform import datadog_authn_mapping.dev_ro_mapping 000000-0000-0000-0000-000000000000
+    datadog_child_organization Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Child Organization resource. This can be used to create Datadog Child Organizations. To manage created organization use datadog_organization_settings.
+        name: datadog_child_organization Resource - terraform-provider-datadog
+        title: datadog_child_organization Resource - terraform-provider-datadog
+        argumentDocs:
+            access_role: (String)
+            api_key: (List of Object) Datadog API key. (see below for nested schema)
+            application_key: (List of Object) An application key with its associated metadata. (see below for nested schema)
+            description: (String) Description of the organization.
+            domains: (List of String)
+            email: (String)
+            enabled: (Boolean)
+            hash: (String)
+            id: (String) The ID of this resource.
+            key: (String)
+            name: (String) Name for Child Organization after creation.
+            owner: (String)
+            private_widget_share: (Boolean)
+            public_id: (String) The public_id of the organization you are operating within.
+            saml: (List of Object) (see below for nested schema)
+            saml_autocreate_access_role: (String)
+            saml_autocreate_users_domains: (List of Object) (see below for nested schema)
+            saml_can_be_enabled: (Boolean)
+            saml_idp_endpoint: (String)
+            saml_idp_initiated_login: (List of Object) (see below for nested schema)
+            saml_idp_metadata_uploaded: (Boolean)
+            saml_login_url: (String)
+            saml_strict_mode: (List of Object) (see below for nested schema)
+            settings: (List of Object) Organization settings (see below for nested schema)
+            user: (List of Object) Information about a user (see below for nested schema)
+        importStatements: []
+    datadog_cloud_workload_security_agent_rule Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Cloud Workload Security Agent Rule API resource for agent rules.
+        name: datadog_cloud_workload_security_agent_rule Resource - terraform-provider-datadog
+        title: datadog_cloud_workload_security_agent_rule Resource - terraform-provider-datadog
+        argumentDocs:
+            description: (String) The description of the Agent rule.
+            enabled: (Boolean) Whether the Agent rule is enabled.
+            expression: (String) The SECL expression of the Agent rule.
+            id: (String) The ID of this resource.
+            name: (String) The name of the Agent rule.
+        importStatements:
+            - |-
+              # Cloud Workload Security Agent rules can be imported using ID, e.g.
+              terraform import datadog_cloud_workload_security_agent_rule.my_agent_rule m0o-hto-lkb
+    datadog_dashboard Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog dashboard resource. This can be used to create and manage Datadog dashboards.
+        name: datadog_dashboard Resource - terraform-provider-datadog
+        title: datadog_dashboard Resource - terraform-provider-datadog
+        argumentDocs:
+            aggregation: (String) The aggregation method.
+            aggregator: (String) The aggregation methods available for metrics queries. Valid values are avg, min, max, sum, last, area, l2norm, percentile.
+            alert_graph_definition: '(Block List, Max: 1) The definition for a Alert Graph widget. (see below for nested schema)'
+            alert_id: (String) The ID of the monitor used by the widget.
+            alert_value_definition: '(Block List, Max: 1) The definition for a Alert Value widget. (see below for nested schema)'
+            alias: (String) An expression alias.
+            alias_name: (String) The expression alias.
+            apm_dependency_stats_query: '(Block List, Max: 1) The APM Dependency Stats query using formulas and functions. (see below for nested schema)'
+            apm_query: '(Block List, Max: 1) The query to use for this widget. (see below for nested schema)'
+            apm_resource_stats_query: '(Block List, Max: 1) The APM Resource Stats query using formulas and functions. (see below for nested schema)'
+            apm_stats_query: '(Block List, Max: 1) (see below for nested schema)'
+            audit_query: '(Block List, Max: 1) The query to use for this widget. (see below for nested schema)'
+            autoscale: (Boolean) A Boolean indicating whether to automatically scale the tile.
+            available_values: (List of String) The list of values that the template variable drop-down is be limited to
+            background_color: '(String) The background color of the group title, options: vivid_blue, vivid_purple, vivid_pink, vivid_orange, vivid_yellow, vivid_green, blue, purple, pink, orange, yellow, green, gray or white'
+            banner_img: (String) The image URL to display as a banner for the group.
+            cell_display_mode: (String) A list of display modes for each table cell. Valid values are number, bar.
+            change_definition: '(Block List, Max: 1) The definition for a Change widget. (see below for nested schema)'
+            change_type: (String) Whether to show absolute or relative change. Valid values are absolute, relative.
+            check: (String) The check to use in the widget.
+            check_status_definition: '(Block List, Max: 1) The definition for a Check Status widget. (see below for nested schema)'
+            color: (String) The color of the text in the widget.
+            color_by_groups: (List of String) List of groups used for colors.
+            color_preference: (String) Whether to colorize text or background. Valid values are background, text.
+            column: (String) The facet path for the column
+            columns: (Block List) Column properties used by the front end for display. (see below for nested schema)
+            comparator: (String) The comparator to use. Valid values are >, >=, <, <=.
+            compare_to: (String) Choose from when to compare current data to. Valid values are hour_before, day_before, week_before, month_before.
+            compute: '(Block List, Min: 1) The compute options. (see below for nested schema)'
+            compute_query: '(Block List, Max: 1) compute_query or multi_compute is required. The map keys are listed below. (see below for nested schema)'
+            conditional_formats: (Block List) Conditional formats allow you to set the color of your widget content or background depending on the rule applied to your data. Multiple conditional_formats blocks are allowed using the structure below. (see below for nested schema)
+            content: (String) The content of the note.
+            count: (Number) The number of results to return
+            custom_bg_color: (String) The color palette to apply to the background, same values available as palette.
+            custom_fg_color: (String) The color palette to apply to the foreground, same values available as palette.
+            custom_link: (Block List) A nested block describing a custom link. Multiple custom_link blocks are allowed using the structure below. (see below for nested schema)
+            custom_unit: (String) The unit for the value displayed in the widget.
+            dashboard_lists: (Set of Number) A list of dashboard lists this dashboard belongs to.
+            dashboard_lists_removed: (Set of Number) A list of dashboard lists this dashboard should be removed from. Internal only.
+            data_source: (String) The data source for APM Dependency Stats queries. Valid values are apm_dependency_stats.
+            default: (String) The default value for the template variable on dashboard load.
+            description: (String) The description of the dashboard.
+            dimension: (String) Dimension of the Scatterplot. Valid values are x, y, radius, color.
+            display_format: (String) The display setting to use. Valid values are counts, countsAndList, list.
+            display_type: '(String) How the marker lines are displayed, options are one of {error, warning, info, ok} combined with one of {dashed, solid, bold}. Example: error dashed.'
+            distribution_definition: '(Block List, Max: 1) The definition for a Distribution widget. (see below for nested schema)'
+            env: (String) APM Environment.
+            event: (Block List) The definition of the event to overlay on the graph. Multiple event blocks are allowed using the structure below. (see below for nested schema)
+            event_query: '(Block List, Max: 1) A timeseries formula and functions events query. (see below for nested schema)'
+            event_size: (String) The size to use to display an event. Valid values are s, l.
+            event_stream_definition: '(Block List, Max: 1) The definition for a Event Stream widget. (see below for nested schema)'
+            event_timeline_definition: '(Block List, Max: 1) The definition for a Event Timeline widget. (see below for nested schema)'
+            expression: (String) The expression name.
+            facet: (String) The facet name.
+            fill: (Block List) The query used to fill the map. Exactly one nested block is allowed using the structure below (exactly one of q, apm_query, log_query, rum_query, security_query or process_query is required within the request block). (see below for nested schema)
+            fill_max: (String) The max value to use to color the map.
+            fill_min: (String) The min value to use to color the map.
+            filter_by: (List of String) A list of processes.
+            filters: (List of String) Your environment and primary tag (or * if enabled for your account).
+            focus: (String) The two-letter ISO code of a country to focus the map on (or WORLD).
+            font_size: (String) The size of the text in the widget.
+            formula: (Block List) (see below for nested schema)
+            formula_expression: (String) A string expression built from queries, formulas, and functions.
+            free_text_definition: '(Block List, Max: 1) The definition for a Free Text widget. (see below for nested schema)'
+            geomap_definition: '(Block List, Max: 1) The definition for a Geomap widget. (see below for nested schema)'
+            global_time_target: (String) The global time target of the widget.
+            group: (String) The check group to use in the widget.
+            group_by: (Block List) Multiple group_by blocks are allowed using the structure below. (see below for nested schema)
+            group_definition: '(Block List, Max: 1) The definition for a Group widget. (see below for nested schema)'
+            grouping: (String) The kind of grouping to use. Valid values are check, cluster.
+            has_background: (Boolean) Whether to display a background or not.
+            has_border: (Boolean) Whether to display a border or not.
+            has_padding: (Boolean) Whether to add padding or not.
+            has_search_bar: (String) Controls the display of the search bar. Valid values are always, never, auto.
+            heatmap_definition: '(Block List, Max: 1) The definition for a Heatmap widget. (see below for nested schema)'
+            height: (Number) The height of the widget.
+            hide_percent: (Boolean) Whether to hide the percentages of the groups.
+            hide_total: (Boolean) Whether or not to show the total value in the widget.
+            hide_value: (Boolean) Setting this to True hides values.
+            hide_zero_counts: (Boolean) A Boolean indicating whether to hide empty categories.
+            horizontal_align: (String) The horizontal alignment for the widget. Valid values are center, left, right.
+            hostmap_definition: '(Block List, Max: 1) The definition for a Hostmap widget. (see below for nested schema)'
+            id: (String) The ID of this resource.
+            iframe_definition: '(Block List, Max: 1) The definition for an Iframe widget. (see below for nested schema)'
+            image_definition: '(Block List, Max: 1) The definition for an Image widget (see below for nested schema)'
+            image_url: (String) Displays an image as the background.
+            include_zero: (Boolean) Always include zero or fit the axis to the data range.
+            increase_good: (Boolean) A Boolean indicating whether an increase in the value is good (displayed in green) or not (displayed in red).
+            index: (String) The name of the index to query.
+            indexes: (List of String) An array of index names to query in the stream.
+            interval: (Number) Define the time interval in seconds.
+            is_column_break: (Boolean) Whether the widget should be the first one on the second column in high density or not. Only for the new dashboard layout and only one widget in the dashboard should have this property set to true.
+            is_hidden: (Boolean) The flag for toggling context menu link visibility.
+            is_normalized_cpu: (Boolean) Whether to normalize the CPU percentages.
+            is_read_only: (Boolean, Deprecated) Whether this dashboard is read-only. Deprecated. Prefer using restricted_roles to define which roles are required to edit the dashboard.
+            is_upstream: (Boolean) Determines whether stats for upstream or downstream dependencies should be queried.
+            label: (String) The label for the custom link URL.
+            layout_type: (String) The layout type of the dashboard. Valid values are ordered, free.
+            legend_columns: (Set of String) A list of columns to display in the legend. Valid values are value, avg, sum, min, max.
+            legend_inline: '(Block List, Max: 1) Used to configure the inline legend. Cannot be used in conjunction with legend_table. (see below for nested schema)'
+            legend_layout: (String) The layout of the legend displayed in the widget. Valid values are auto, horizontal, vertical.
+            legend_size: (String) The size of the legend displayed in the widget.
+            legend_table: '(Block List, Max: 1) Used to configure the table legend. Cannot be used in conjunction with legend_inline. (see below for nested schema)'
+            limit: (Number) The maximum number of items in the group.
+            line_type: (String) The type of lines displayed. Valid values are dashed, dotted, solid.
+            line_width: (String) The width of line displayed. Valid values are normal, thick, thin.
+            link: (String) The URL of the custom link.
+            live_span: (String) The timeframe to use when displaying the widget. Valid values are 1m, 5m, 10m, 15m, 30m, 1h, 4h, 1d, 2d, 1w, 1mo, 3mo, 6mo, 1y, alert.
+            log_query: '(Block List, Max: 1) The query to use for this widget. (see below for nested schema)'
+            log_stream_definition: '(Block List, Max: 1) The definition for an Log Stream widget. (see below for nested schema)'
+            manage_status_definition: '(Block List, Max: 1) The definition for an Manage Status widget. (see below for nested schema)'
+            margin: '(String) The margins to use around the image. Note: small and large values are deprecated. Valid values are sm, md, lg, small, large.'
+            marker: (Block List) A nested block describing the marker to use when displaying the widget. The structure of this block is described below. Multiple marker blocks are allowed within a given tile_def block. (see below for nested schema)
+            max: (String) Specify the maximum value to show on the Y-axis.
+            message_display: (String) The number of log lines to display. Valid values are inline, expanded-md, expanded-lg.
+            metadata: (Block List) Used to define expression aliases. Multiple metadata blocks are allowed using the structure below. (see below for nested schema)
+            metric: (String) The metric from the request to correlate with this conditional format.
+            metric_query: '(Block List, Max: 1) A timeseries formula and functions metrics query. (see below for nested schema)'
+            min: (String) Specify the minimum value to show on the Y-axis.
+            multi_compute: (Block List) compute_query or multi_compute is required. Multiple multi_compute blocks are allowed using the structure below. (see below for nested schema)
+            name: (String) The name of the variable.
+            network_query: '(Block List, Max: 1) The query to use for this widget. (see below for nested schema)'
+            no_group_hosts: (Boolean) A Boolean indicating whether to show ungrouped nodes.
+            no_metric_hosts: (Boolean) A Boolean indicating whether to show nodes with no metrics.
+            node_type: (String) The type of node used. Valid values are host, container.
+            note_definition: '(Block List, Max: 1) The definition for a Note widget. (see below for nested schema)'
+            notify_list: (Set of String) The list of handles for the users to notify when changes are made to this dashboard.
+            on_right_yaxis: (Boolean) A Boolean indicating whether the request uses the right or left Y-Axis.
+            operation_name: (String) Name of operation on service.
+            order: (String) Widget sorting methods. Valid values are asc, desc.
+            order_by: (String) What to order by. Valid values are change, name, present, past.
+            order_dir: (String) Widget sorting method. Valid values are asc, desc.
+            override_label: (String) The label id that refers to a context menu link item. When override_label is provided, the client request omits the label field.
+            palette: (String) The color palette to apply. Valid values are blue, custom_bg, custom_image, custom_text, gray_on_white, grey, green, orange, red, red_on_white, white_on_gray, white_on_green, green_on_white, white_on_red, white_on_yellow, yellow_on_white, black_on_light_yellow, black_on_light_green, black_on_light_red.
+            palette_flip: (Boolean) A Boolean indicating whether to flip the palette tones.
+            precision: (Number) The precision to use when displaying the value. Use * for maximum precision.
+            prefix: (String) The tag prefix associated with the variable. Only tags with this prefix appear in the variable dropdown.
+            primary_tag: (String) The organization's host group name and value.
+            primary_tag_name: (String) The name of the second primary tag used within APM; required when primary_tag_value is specified. See https://docs.datadoghq.com/tracing/guide/setting_primary_tags_to_scope/#add-a-second-primary-tag-in-datadog.
+            primary_tag_value: (String) Filter APM data by the second primary tag. primary_tag_name must also be specified.
+            process_query: '(Block List, Max: 1) The process query to use in the widget. The structure of this block is described below. (see below for nested schema)'
+            q: (String) The metric query to use for this widget.
+            query: (Block List) (see below for nested schema)
+            query_table_definition: '(Block List, Max: 1) The definition for a Query Table widget. (see below for nested schema)'
+            query_value_definition: '(Block List, Max: 1) The definition for a Query Value widget. (see below for nested schema)'
+            reflow_type: (String) The reflow type of a new dashboard layout. Set this only when layout type is ordered. If set to fixed, the dashboard expects all widgets to have a layout, and if it's set to auto, widgets should not have layouts. Valid values are auto, fixed.
+            request: (Block List) A nested block describing the request to use when displaying the widget. Multiple request blocks are allowed using the structure below (exactly one of q, apm_query, log_query, rum_query, security_query or process_query is required within the request block). (see below for nested schema)
+            resource: (String) The resource name.
+            resource_name: (String) APM resource.
+            restricted_roles: (Set of String) UUIDs of roles whose associated users are authorized to edit the dashboard.
+            right_yaxis: '(Block List, Max: 1) A nested block describing the right Y-Axis Controls. See the on_right_yaxis property for which request will use this axis. The structure of this block is described below. (see below for nested schema)'
+            row_type: (String) The level of detail for the request. Valid values are service, resource, span.
+            rum_query: '(Block List, Max: 1) The query to use for this widget. (see below for nested schema)'
+            scale: '(String) Specify the scale type, options: linear, log, pow, sqrt.'
+            scatterplot_definition: '(Block List, Max: 1) The definition for a Scatterplot widget. (see below for nested schema)'
+            scatterplot_table: (Block List) Scatterplot request containing formulas and functions. (see below for nested schema)
+            scope: (List of String) The list of tags to filter nodes by.
+            search: '(Block List, Max: 1) The search options. (see below for nested schema)'
+            search_by: (String) Your chosen search term.
+            search_query: (String) The search query to use.
+            security_query: '(Block List, Max: 1) The query to use for this widget. (see below for nested schema)'
+            service: (String) APM service.
+            service_level_objective_definition: '(Block List, Max: 1) The definition for a Service Level Objective widget. (see below for nested schema)'
+            servicemap_definition: '(Block List, Max: 1) The definition for a Service Map widget. (see below for nested schema)'
+            show_breakdown: (Boolean) Whether to show the latency breakdown or not.
+            show_date_column: (Boolean) If the date column should be displayed.
+            show_distribution: (Boolean) Whether to show the latency distribution or not.
+            show_error_budget: (Boolean) Whether to show the error budget or not.
+            show_errors: (Boolean) Whether to show the error metrics or not.
+            show_hits: (Boolean) Whether to show the hits metrics or not
+            show_last_triggered: (Boolean) A Boolean indicating whether to show when monitors/groups last triggered.
+            show_latency: (Boolean) Whether to show the latency metrics or not.
+            show_legend: (Boolean) Whether or not to show the legend on this widget.
+            show_message_column: (Boolean) If the message column should be displayed.
+            show_present: (Boolean) If set to true, displays the current value.
+            show_resource_list: (Boolean) Whether to show the resource list or not.
+            show_tick: (Boolean) Whether to show a tick or not.
+            show_title: (Boolean) Whether to show the title or not.
+            size: (Block List) The query used to size the map. Exactly one nested block is allowed using the structure below (exactly one of q, apm_query, log_query, rum_query, security_query or process_query is required within the request block). (see below for nested schema)
+            size_format: (String) The size of the widget. Valid values are small, medium, large.
+            sizing: '(String) The preferred method to adapt the dimensions of the image. The values are based on the image object-fit CSS properties. Note: zoom, fit and center values are deprecated. Valid values are fill, contain, cover, none, scale-down, zoom, fit, center.'
+            slo_id: (String) The ID of the service level objective used by the widget.
+            sort: '(Block List, Max: 1) The options for sorting group by results. (see below for nested schema)'
+            sort_query: '(Block List, Max: 1) A list of exactly one element describing the sort query to use. (see below for nested schema)'
+            span_name: (String) APM span name
+            stat: (String) APM statistic. Valid values are avg_duration, avg_root_duration, avg_spans_per_trace, error_rate, pct_exec_time, pct_of_traces, total_traces_count.
+            style: '(Block List, Max: 1) The style of the widget graph. One nested block is allowed using the structure below. (see below for nested schema)'
+            summary_type: (String) The summary type to use. Valid values are monitors, groups, combined.
+            sunburst_definition: '(Block List, Max: 1) The definition for a Sunburst widget. (see below for nested schema)'
+            tag_filters: (List of String) An array of tags to filter by.
+            tags: (List of String) A list of tags to use in the widget.
+            tags_execution: '(String) The execution method for multi-value filters, options: and or or.'
+            template_variable: (Block List) The list of template variables for this dashboard. (see below for nested schema)
+            template_variable_preset: (Block List) The list of selectable template variable presets for this dashboard. (see below for nested schema)
+            text: (String) The text to display in the widget.
+            text_align: (String) The alignment of the text in the widget. Valid values are center, left, right.
+            text_filter: (String) The text to use as a filter.
+            tick_edge: (String) When tick = true, a string indicating on which side of the widget the tick should be displayed. Valid values are bottom, left, right, top.
+            tick_pos: '(String) When tick = true, a string with a percent sign indicating the position of the tick, for example: tick_pos = "50%" is centered alignment.'
+            time_windows: (List of String) A list of time windows to display in the widget. Valid values are 7d, 30d, 90d, week_to_date, previous_week, month_to_date, previous_month, global_time.
+            timeframe: (String) Defines the displayed timeframe.
+            timeseries_background: '(Block List, Max: 1) Set a timeseries on the widget background. (see below for nested schema)'
+            timeseries_definition: '(Block List, Max: 1) The definition for a Timeseries widget. (see below for nested schema)'
+            title: (String) The title of the dashboard.
+            title_align: (String) The alignment of the widget's title. Valid values are center, left, right.
+            title_size: (String) The size of the widget's title (defaults to 16).
+            toplist_definition: '(Block List, Max: 1) The definition for a Toplist widget. (see below for nested schema)'
+            trace_service_definition: '(Block List, Max: 1) The definition for a Trace Service widget. (see below for nested schema)'
+            treemap_definition: '(Block List, Max: 1) The definition for a Treemap widget. (see below for nested schema)'
+            type: (String) Whether the Timeseries is made using an area or bars. Valid values are bars, area.
+            unit: (String) The unit for the value displayed in the widget.
+            url: (String) The URL of the dashboard.
+            url_dark_theme: (String) The URL in dark mode to use as a data source for the widget.
+            value: (String) The value that should be assumed by the template variable in this preset
+            vertical_align: (String) The vertical alignment for the widget. Valid values are center, top, bottom.
+            view: '(Block List, Min: 1, Max: 1) The view of the world that the map should render. (see below for nested schema)'
+            view_mode: (String) The view mode for the widget. Valid values are overall, component, both.
+            view_type: (String) The type of view to use when displaying the widget. Only detail is supported.
+            viz_type: (String) Type of visualization to use when displaying the widget. Valid values are timeseries, toplist.
+            widget: (Block List) The list of widgets to display on the dashboard. (see below for nested schema)
+            widget_layout: '(Block List, Max: 1) The layout of the widget on a ''free'' dashboard. (see below for nested schema)'
+            width: (Number) The width of the widget.
+            x: (Block List) The query used for the X-Axis. Exactly one nested block is allowed using the structure below (exactly one of q, apm_query, log_query, rum_query, security_query, apm_stats_query or process_query is required within the block). (see below for nested schema)
+            xaxis: '(Block List, Max: 1) A nested block describing the X-Axis Controls. Exactly one nested block is allowed using the structure below. (see below for nested schema)'
+            "y": (Block List) The query used for the Y-Axis. Exactly one nested block is allowed using the structure below (exactly one of q, apm_query, log_query, rum_query, security_query, apm_stats_query or process_query is required within the block). (see below for nested schema)
+            yaxis: '(Block List, Max: 1) A nested block describing the Y-Axis Controls. The structure of this block is described below. (see below for nested schema)'
+        importStatements:
+            - terraform import datadog_dashboard.my_service_dashboard sv7-gyh-kas
+    datadog_dashboard_json Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog dashboard JSON resource. This can be used to create and manage Datadog dashboards using the JSON definition.
+        name: datadog_dashboard_json Resource - terraform-provider-datadog
+        title: datadog_dashboard_json Resource - terraform-provider-datadog
+        argumentDocs:
+            dashboard: (String) The JSON formatted definition of the Dashboard.
+            dashboard_lists: (Set of Number) The list of dashboard lists this dashboard belongs to.
+            dashboard_lists_removed: (Set of Number) The list of dashboard lists this dashboard should be removed from. Internal only.
+            id: (String) The ID of this resource.
+            url: (String) The URL of the dashboard.
+        importStatements: []
+    datadog_dashboard_list Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog dashboard_list resource. This can be used to create and manage Datadog Dashboard Lists and the individual dashboards within them.
+        name: datadog_dashboard_list Resource - terraform-provider-datadog
+        title: datadog_dashboard_list Resource - terraform-provider-datadog
+        argumentDocs:
+            dash_id: (String) The ID of the dashboard to add
+            dash_item: (Block Set) A set of dashboard items that belong to this list (see below for nested schema)
+            id: (String) The ID of this resource.
+            name: (String) The name of the Dashboard List
+            type: (String) The type of this dashboard. Valid values are custom_timeboard, custom_screenboard, integration_screenboard, integration_timeboard, host_timeboard.
+        importStatements:
+            - terraform import datadog_dashboard_list.new_list 123456
+    datadog_downtime Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog downtime resource. This can be used to create and manage Datadog downtimes.
+        name: datadog_downtime Resource - terraform-provider-datadog
+        title: datadog_downtime Resource - terraform-provider-datadog
+        argumentDocs:
+            active: (Boolean) When true indicates this downtime is being actively applied
+            active_child_id: (Number) The id corresponding to the downtime object definition of the active child for the original parent recurring downtime. This field will only exist on recurring downtimes.
+            disabled: (Boolean) When true indicates this downtime is not being applied
+            end: (Number) Optionally specify an end date when this downtime should expire
+            end_date: (String) String representing date and time to end the downtime in RFC3339 format.
+            id: (String) The ID of this resource.
+            message: (String) An optional message to provide when creating the downtime, can include notification handles
+            monitor_id: (Number) When specified, this downtime will only apply to this monitor
+            monitor_tags: (Set of String) A list of monitor tags (up to 32) to base the scheduled downtime on. Only monitors that have all selected tags are silenced
+            mute_first_recovery_notification: (Boolean) When true the first recovery notification during the downtime will be muted
+            period: (Number) How often to repeat as an integer. For example to repeat every 3 days, select a type of days and a period of 3.
+            recurrence: '(Block List, Max: 1) Optional recurring schedule for this downtime (see below for nested schema)'
+            rrule: (String) The RRULE standard for defining recurring events. For example, to have a recurring event on the first day of each month, use FREQ=MONTHLY;INTERVAL=1. Most common rrule options from the iCalendar Spec are supported. Attributes specifying the duration in RRULE are not supported (for example, DTSTART, DTEND, DURATION). Only applicable when type is rrule.
+            scope: (List of String) specify the group scope to which this downtime applies. For everything use '*'
+            start: (Number) Specify when this downtime should start
+            start_date: (String) String representing date and time to start the downtime in RFC3339 format.
+            timezone: (String) The timezone for the downtime, default UTC
+            type: (String) One of days, weeks, months, years, or rrule.
+            until_date: (Number) The date at which the recurrence should end as a POSIX timestamp. until_occurrences and until_date are mutually exclusive.
+            until_occurrences: (Number) How many times the downtime will be rescheduled. until_occurrences and until_date are mutually exclusive.
+            week_days: '(List of String) A list of week days to repeat on. Choose from: Mon, Tue, Wed, Thu, Fri, Sat or Sun. Only applicable when type is weeks. First letter must be capitalized.'
+        importStatements:
+            - terraform import datadog_downtime.bytes_received_localhost 2081
+    datadog_integration_aws Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog - Amazon Web Services integration resource. This can be used to create and manage Datadog - Amazon Web Services integration.
+        name: datadog_integration_aws Resource - terraform-provider-datadog
+        title: datadog_integration_aws Resource - terraform-provider-datadog
+        argumentDocs:
+            access_key_id: (String) Your AWS access key ID. Only required if your AWS account is a GovCloud or China account.
+            account_id: (String) Your AWS Account ID without dashes.
+            account_specific_namespace_rules: (Map of Boolean) Enables or disables metric collection for specific AWS namespaces for this AWS account only. A list of namespaces can be found at the available namespace rules API endpoint.
+            cspm_resource_collection_enabled: (String) Whether Datadog collects cloud security posture management resources from your AWS account. This includes additional resources not covered under the general resource_collection.
+            excluded_regions: (List of String) An array of AWS regions to exclude from metrics collection.
+            external_id: (String) AWS External ID. NOTE This provider will not be able to detect changes made to the external_id field from outside Terraform.
+            filter_tags: (List of String) Array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2. Wildcards, such as ? (for single characters) and * (for multiple characters) can also be used. Only hosts that match one of the defined tags will be imported into Datadog. The rest will be ignored. Host matching a given tag can also be excluded by adding ! before the tag. e.x. env:production,instance-type:c1.*,!region:us-east-1.
+            host_tags: (List of String) Array of tags (in the form key:value) to add to all hosts and metrics reporting through this integration.
+            id: (String) The ID of this resource.
+            metrics_collection_enabled: (String) Whether Datadog collects metrics for this AWS account.
+            resource_collection_enabled: (String) Whether Datadog collects a standard set of resources from your AWS account.
+            role_name: (String) Your Datadog role delegation name.
+            secret_access_key: (String, Sensitive) Your AWS secret access key. Only required if your AWS account is a GovCloud or China account.
+        importStatements:
+            - |-
+              # Amazon Web Services integrations can be imported using their account ID and role name separated with a colon (:), while the external_id should be passed by setting an environment variable called EXTERNAL_ID
+              EXTERNAL_ID=${external_id} terraform import datadog_integration_aws.test ${account_id}:${role_name}
+    datadog_integration_aws_lambda_arn Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog - Amazon Web Services integration Lambda ARN resource. This can be used to create and manage the log collection Lambdas for an account. Update operations are currently not supported with datadog API so any change forces a new resource.
+        name: datadog_integration_aws_lambda_arn Resource - terraform-provider-datadog
+        title: datadog_integration_aws_lambda_arn Resource - terraform-provider-datadog
+        argumentDocs:
+            account_id: (String) Your AWS Account ID without dashes. If your account is a GovCloud or China account, specify the access_key_id here.
+            id: (String) The ID of this resource.
+            lambda_arn: (String) The ARN of the Datadog forwarder Lambda.
+        importStatements:
+            - |-
+              # Amazon Web Services Lambda ARN integrations can be imported using their account_id and lambda_arn separated with a space (` `).
+              terraform import datadog_integration_aws_lambda_arn.test "1234567890 arn:aws:lambda:us-east-1:1234567890:function:datadog-forwarder-Forwarder"
+    datadog_integration_aws_log_collection Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog - Amazon Web Services integration log collection resource. This can be used to manage which AWS services logs are collected from for an account.
+        name: datadog_integration_aws_log_collection Resource - terraform-provider-datadog
+        title: datadog_integration_aws_log_collection Resource - terraform-provider-datadog
+        argumentDocs:
+            account_id: (String) Your AWS Account ID without dashes. If your account is a GovCloud or China account, specify the access_key_id here.
+            id: (String) The ID of this resource.
+            services: (List of String) A list of services to collect logs from. See the api docs for more details on which services are supported.
+        importStatements:
+            - |-
+              # Amazon Web Services log collection integrations can be imported using the `account ID`.
+              terraform import datadog_integration_aws_log_collection.test 1234567890
+    datadog_integration_aws_tag_filter Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog AWS tag filter resource. This can be used to create and manage Datadog AWS tag filters.
+        name: datadog_integration_aws_tag_filter Resource - terraform-provider-datadog
+        title: datadog_integration_aws_tag_filter Resource - terraform-provider-datadog
+        argumentDocs:
+            account_id: (String) Your AWS Account ID without dashes. If your account is a GovCloud or China account, specify the access_key_id here.
+            id: (String) The ID of this resource.
+            namespace: (String) The namespace associated with the tag filter entry. Valid values are elb, application_elb, sqs, rds, custom, network_elb, lambda.
+            tag_filter_str: (String) The tag filter string.
+        importStatements:
+            - |-
+              # Amazon Web Services log filter resource can be imported using their account ID and namespace separated with a colon (:).
+              terraform import datadog_integration_aws_tag_filter.foo ${account_id}:${namespace}
+    datadog_integration_azure Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog - Microsoft Azure integration resource. This can be used to create and manage the integrations.
+        name: datadog_integration_azure Resource - terraform-provider-datadog
+        title: datadog_integration_azure Resource - terraform-provider-datadog
+        argumentDocs:
+            automute: (Boolean) Silence monitors for expected Azure VM shutdowns.
+            client_id: (String) Your Azure web application ID.
+            client_secret: (String, Sensitive) (Required for Initial Creation) Your Azure web application secret key.
+            host_filters: (String) String of host tag(s) (in the form key:value,key:value) defines a filter that Datadog will use when collecting metrics from Azure. Limit the Azure instances that are pulled into Datadog by using tags. Only hosts that match one of the defined tags are imported into Datadog. e.x. env:production,deploymentgroup:red
+            id: (String) The ID of this resource.
+            tenant_name: (String) Your Azure Active Directory ID.
+        importStatements:
+            - |-
+              # Microsoft Azure integrations can be imported using their `tenant name` and `client` id separated with a colon (`:`).
+              terraform import datadog_integration_azure.sandbox ${tenant_name}:${client_id}
+    datadog_integration_gcp Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog - Google Cloud Platform integration resource. This can be used to create and manage Datadog - Google Cloud Platform integration.
+        name: datadog_integration_gcp Resource - terraform-provider-datadog
+        title: datadog_integration_gcp Resource - terraform-provider-datadog
+        argumentDocs:
+            automute: (Boolean) Silence monitors for expected GCE instance shutdowns.
+            client_email: (String) Your email found in your JSON service account key.
+            client_id: (String) Your ID found in your JSON service account key.
+            host_filters: (String) Limit the GCE instances that are pulled into Datadog by using tags. Only hosts that match one of the defined tags are imported into Datadog.
+            id: (String) The ID of this resource.
+            private_key: (String, Sensitive) Your private key name found in your JSON service account key.
+            private_key_id: (String) Your private key ID found in your JSON service account key.
+            project_id: (String) Your Google Cloud project ID found in your JSON service account key.
+        importStatements:
+            - |-
+              # Google Cloud Platform integrations can be imported using their project ID, e.g.
+              terraform import datadog_integration_gcp.awesome_gcp_project_integration project_id
+    datadog_integration_pagerduty Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog - PagerDuty resource. This can be used to create and manage Datadog - PagerDuty integration. See also PagerDuty Integration Guide https://www.pagerduty.com/docs/guides/datadog-integration-guide/.
+        name: datadog_integration_pagerduty Resource - terraform-provider-datadog
+        title: datadog_integration_pagerduty Resource - terraform-provider-datadog
+        argumentDocs:
+            api_token: (String, Sensitive) Your PagerDuty API token.
+            id: (String) The ID of this resource.
+            schedules: (List of String) Array of your schedule URLs.
+            subdomain: (String) Your PagerDuty account’s personalized subdomain name.
+        importStatements: []
+    datadog_integration_pagerduty_service_object Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides access to individual Service Objects of Datadog - PagerDuty integrations. Note that the Datadog - PagerDuty integration must be activated in the Datadog UI in order for this resource to be usable.
+        name: datadog_integration_pagerduty_service_object Resource - terraform-provider-datadog
+        title: datadog_integration_pagerduty_service_object Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            service_key: '(String, Sensitive) Your Service name associated service key in PagerDuty. Note: Since the Datadog API never returns service keys, it is impossible to detect drifts. The best way to solve a drift is to manually mark the Service Object resource with terraform taint to have it destroyed and recreated.'
+            service_name: (String) Your Service name in PagerDuty.
+        importStatements: []
+    datadog_integration_slack_channel Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Resource for interacting with the Datadog Slack channel API
+        name: datadog_integration_slack_channel Resource - terraform-provider-datadog
+        title: datadog_integration_slack_channel Resource - terraform-provider-datadog
+        argumentDocs:
+            account_name: (String) Slack account name.
+            channel_name: (String) Slack channel name.
+            display: '(Block List, Min: 1, Max: 1) Configuration options for what is shown in an alert event message. (see below for nested schema)'
+            id: (String) The ID of this resource.
+            message: (Boolean) Show the main body of the alert event.
+            notified: (Boolean) Show the list of @-handles in the alert event.
+            snapshot: (Boolean) Show the alert event's snapshot image.
+            tags: (Boolean) Show the scopes on which the monitor alerted.
+        importStatements:
+            - |-
+              # Slack channel integrations can be imported using their account_name and channel_name separated with a colon (`:`).
+              terraform import datadog_integration_slack_channel.test_channel "foo:#test_channel"
+    datadog_logs_archive Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Logs Archive API resource, which is used to create and manage Datadog logs archives.
+        name: datadog_logs_archive Resource - terraform-provider-datadog
+        title: datadog_logs_archive Resource - terraform-provider-datadog
+        argumentDocs:
+            account_id: (String) Your AWS account id.
+            azure_archive: '(Block List, Max: 1) Definition of an azure archive. (see below for nested schema)'
+            bucket: (String) Name of your GCS bucket.
+            client_email: (String) Your client email.
+            client_id: (String) Your client id.
+            container: (String) The container where the archive will be stored.
+            gcs_archive: '(Block List, Max: 1) Definition of a GCS archive. (see below for nested schema)'
+            id: (String) The ID of this resource.
+            include_tags: (Boolean) To store the tags in the archive, set the value true. If it is set to false, the tags will be dropped when the logs are sent to the archive.
+            name: (String) Your archive name.
+            path: (String) The path where the archive will be stored.
+            project_id: (String) Your project id.
+            query: (String) The archive query/filter. Logs matching this query are included in the archive.
+            rehydration_max_scan_size_in_gb: (Number) To limit the rehydration scan size for the archive, set a value in GB.
+            rehydration_tags: (List of String) An array of tags to add to rehydrated logs from an archive.
+            role_name: (String) Your AWS role name
+            s3_archive: '(Block List, Max: 1) Definition of an s3 archive. (see below for nested schema)'
+            storage_account: (String) The associated storage account.
+            tenant_id: (String) Your tenant id.
+        importStatements:
+            - terraform import datadog_logs_archive.my_s3_archive 1Aabc2_dfQPLnXy3HlfK4hi
+    datadog_logs_archive_order Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Logs Archive API https://docs.datadoghq.com/api/v2/logs-archives/ resource, which is used to manage Datadog log archives order.
+        name: datadog_logs_archive_order Resource - terraform-provider-datadog
+        title: datadog_logs_archive_order Resource - terraform-provider-datadog
+        argumentDocs:
+            archive_ids: (List of String) The archive IDs list. The order of archive IDs in this attribute defines the overall archive order for logs. If archive_ids is empty or not specified, it will import the actual archive order, and create the resource. Otherwise, it will try to update the order.
+            id: (String) The ID of this resource.
+        importStatements:
+            - |-
+              # There must be at most one datadog_logs_archive_order resource. You can import the datadog_logs_archive_order or create an archive order.
+              terraform import <datadog_logs_archive_order.name> archiveOrderID
+    datadog_logs_custom_pipeline Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: 'Provides a Datadog Logs Pipeline API https://docs.datadoghq.com/api/v1/logs-pipelines/ resource, which is used to create and manage Datadog logs custom pipelines. Each datadog_logs_custom_pipeline resource defines a complete pipeline. The order of the pipelines is maintained in a different resource: datadog_logs_pipeline_order. When creating a new pipeline, you need to explicitly add this pipeline to the datadog_logs_pipeline_order resource to track the pipeline. Similarly, when a pipeline needs to be destroyed, remove its references from the datadog_logs_pipeline_order resource.'
+        name: datadog_logs_custom_pipeline Resource - terraform-provider-datadog
+        title: datadog_logs_custom_pipeline Resource - terraform-provider-datadog
+        argumentDocs:
+            arithmetic_processor: '(Block List, Max: 1) Arithmetic Processor. More information can be found in the official docs (see below for nested schema)'
+            attribute_remapper: '(Block List, Max: 1) Attribute Remapper Processor. More information can be found in the official docs (see below for nested schema)'
+            category: '(Block List, Min: 1) List of filters to match or exclude a log with their corresponding name to assign a custom value to the log. (see below for nested schema)'
+            category_processor: '(Block List, Max: 1) Category Processor. More information can be found in the official docs (see below for nested schema)'
+            date_remapper: '(Block List, Max: 1) Date Remapper Processor. More information can be found in the official docs (see below for nested schema)'
+            default_lookup: (String) Default lookup value to use if there is no entry in the lookup table for the value of the source attribute.
+            expression: (String) Arithmetic operation between one or more log attributes.
+            filter: '(Block List, Min: 1) (see below for nested schema)'
+            geo_ip_parser: '(Block List, Max: 1) Date GeoIP Processor. More information can be found in the official docs (see below for nested schema)'
+            grok: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            grok_parser: '(Block List, Max: 1) Grok Processor. More information can be found in the official docs (see below for nested schema)'
+            id: (String) The ID of this resource.
+            is_enabled: (Boolean)
+            is_encoded: (Boolean) If the source attribute is URL encoded or not.
+            is_replace_missing: (Boolean) If true, it replaces all missing attributes of expression by 0, false skips the operation if an attribute is missing.
+            lookup_processor: '(Block List, Max: 1) Lookup Processor. More information can be found in the official docs (see below for nested schema)'
+            lookup_table: (List of String) List of entries of the lookup table using key,value format.
+            match_rules: (String) Match rules for your grok parser.
+            message_remapper: '(Block List, Max: 1) Message Remapper Processor. More information can be found in the official docs (see below for nested schema)'
+            name: (String)
+            normalize_ending_slashes: (Boolean) Normalize the ending slashes or not.
+            override_on_conflict: (Boolean) Override the target element if already set.
+            pipeline: '(Block List, Max: 1) (see below for nested schema)'
+            preserve_source: (Boolean) Remove or preserve the remapped source element.
+            processor: (Block List) (see below for nested schema)
+            query: (String) Filter criteria of the category.
+            samples: (List of String) List of sample logs for this parser. It can save up to 5 samples. Each sample takes up to 5000 characters.
+            service_remapper: '(Block List, Max: 1) Service Remapper Processor. More information can be found in the official docs (see below for nested schema)'
+            source: (String) Name of the log attribute to parse.
+            source_type: (String) Defines where the sources are from (log attribute or tag).
+            sources: (List of String) List of source attributes or tags.
+            status_remapper: '(Block List, Max: 1) Status Remapper Processor. More information can be found in the official docs (see below for nested schema)'
+            string_builder_processor: '(Block List, Max: 1) String Builder Processor. More information can be found in the official docs (see below for nested schema)'
+            support_rules: (String) Support rules for your grok parser.
+            target: (String) Name of the attribute that contains the result of the arithmetic operation.
+            target_format: (String) If the target_type of the remapper is attribute, try to cast the value to a new specific type. If the cast is not possible, the original type is kept. string, integer, or double are the possible types. If the target_type is tag, this parameter may not be specified.
+            target_type: (String) Defines if the target is a log attribute or tag.
+            template: (String) The formula with one or more attributes and raw text.
+            trace_id_remapper: '(Block List, Max: 1) Trace ID Remapper Processor. More information can be found in the official docs (see below for nested schema)'
+            url_parser: '(Block List, Max: 1) URL Parser Processor. More information can be found in the official docs (see below for nested schema)'
+            user_agent_parser: '(Block List, Max: 1) User-Agent Parser Processor. More information can be found in the official docs (see below for nested schema)'
+        importStatements:
+            - |-
+              # To find the pipeline ID, click the "edit" button in the UI to open the pipeline details.
+              # The pipeline ID is the last part of the URL.
+              terraform import <resource.name> <pipelineID>
+    datadog_logs_index Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: 'Provides a Datadog Logs Index API resource. This can be used to create and manage Datadog logs indexes.Note: It is not possible to delete logs indexes through Terraform, so an index remains in your account after the resource is removed from your terraform config. Reach out to support to delete a logs index.'
+        name: datadog_logs_index Resource - terraform-provider-datadog
+        title: datadog_logs_index Resource - terraform-provider-datadog
+        argumentDocs:
+            daily_limit: (Number) The number of log events you can send in this index per day before you are rate-limited.
+            disable_daily_limit: (Boolean) If true, sets the daily_limit value to null and the index is not limited on a daily basis (any specified daily_limit value in the request is ignored). If false or omitted, the index's current daily_limit is maintained.
+            exclusion_filter: (Block List) List of exclusion filters. (see below for nested schema)
+            filter: '(Block List, Min: 1, Max: 1) Logs filter (see below for nested schema)'
+            id: (String) The ID of this resource.
+            is_enabled: (Boolean) A boolean stating if the exclusion is active or not.
+            name: (String) The name of the index.
+            query: (String) Logs filter criteria. Only logs matching this filter criteria are considered for this index.
+            retention_days: (Number) The number of days before logs are deleted from this index.
+            sample_rate: (Number) The fraction of logs excluded by the exclusion filter, when active.
+        importStatements:
+            - terraform import <datadog_logs_index.name> <indexName>
+    datadog_logs_index_order Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Logs Index API resource. This can be used to manage the order of Datadog logs indexes.
+        name: datadog_logs_index_order Resource - terraform-provider-datadog
+        title: datadog_logs_index_order Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            indexes: (List of String) The index resource list. Logs are tested against the query filter of each index one by one following the order of the list.
+            name: (String) The unique name of the index order resource.
+        importStatements:
+            - |-
+              # The Datadog Terraform Provider does not support the creation and deletion of index orders. There must be at most one `datadog_logs_index_order` resource
+              terraform import <datadog_logs_index_order.name> <name>
+    datadog_logs_integration_pipeline Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Logs Pipeline API resource to manage the integrations. Integration pipelines are the pipelines that are automatically installed for your organization when sending the logs with specific sources. You don't need to maintain or update these types of pipelines. Keeping them as resources, however, allows you to manage the order of your pipelines by referencing them in your datadog_logs_pipeline_order resource. If you don't need the pipeline_order feature, this resource declaration can be omitted.
+        name: datadog_logs_integration_pipeline Resource - terraform-provider-datadog
+        title: datadog_logs_integration_pipeline Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            is_enabled: (Boolean) Boolean value to enable your pipeline.
+        importStatements:
+            - |-
+              # To find the pipeline ID, click the "view" button in the UI to open the pipeline details.
+              # The pipeline ID is the last part of the URL.
+              terraform import <resource.name> <pipelineID>
+    datadog_logs_metric Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Resource for interacting with the logs_metric API
+        name: datadog_logs_metric Resource - terraform-provider-datadog
+        title: datadog_logs_metric Resource - terraform-provider-datadog
+        argumentDocs:
+            aggregation_type: (String) The type of aggregation to use. This field can't be updated after creation. Valid values are count, distribution.
+            compute: '(Block List, Min: 1, Max: 1) The compute rule to compute the log-based metric. This field can''t be updated after creation. (see below for nested schema)'
+            filter: '(Block List, Min: 1, Max: 1) The log-based metric filter. Logs matching this filter will be aggregated in this metric. (see below for nested schema)'
+            group_by: (Block List) The rules for the group by. (see below for nested schema)
+            id: (String) The ID of this resource.
+            name: (String) The name of the log-based metric. This field can't be updated after creation.
+            path: (String) The path to the value the log-based metric will aggregate on (only used if the aggregation type is a "distribution"). This field can't be updated after creation.
+            query: (String) The search query - following the log search syntax.
+            tag_name: (String) Name of the tag that gets created.
+        importStatements:
+            - terraform import datadog_logs_metric.testing_logs_metric testing.logs.metric
+    datadog_logs_pipeline_order Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Logs Pipeline API resource, which is used to manage Datadog log pipelines order.
+        name: datadog_logs_pipeline_order Resource - terraform-provider-datadog
+        title: datadog_logs_pipeline_order Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            name: (String) The name attribute in the resource datadog_logs_pipeline_order needs to be unique. It's recommended to use the same value as the resource name. No related field is available in Logs Pipeline API.
+            pipelines: (List of String) The pipeline IDs list. The order of pipeline IDs in this attribute defines the overall pipeline order for logs.
+        importStatements:
+            - |-
+              # There must be at most one datadog_logs_pipeline_order resource. Pipeline order creation is not supported from logs config API. You can import the datadog_logs_pipeline_order or create a pipeline order (which is actually doing the update operation).
+              terraform import <datadog_logs_pipeline_order.name> <name>
+    datadog_metric_metadata Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog metric_metadata resource. This can be used to manage a metric's metadata.
+        name: datadog_metric_metadata Resource - terraform-provider-datadog
+        title: datadog_metric_metadata Resource - terraform-provider-datadog
+        argumentDocs:
+            description: (String) A description of the metric.
+            id: (String) The ID of this resource.
+            metric: (String) The name of the metric.
+            per_unit: (String) Per unit of the metric such as second in bytes per second.
+            short_name: (String) A short name of the metric.
+            statsd_interval: (Number) If applicable, statsd flush interval in seconds for the metric.
+            type: (String) Metric type such as gauge or rate.
+            unit: (String) Primary unit of the metric such as byte or operation.
+        importStatements: []
+    datadog_metric_tag_configuration Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog metric tag configuration resource. This can be used to modify tag configurations for metrics.
+        name: datadog_metric_tag_configuration Resource - terraform-provider-datadog
+        title: datadog_metric_tag_configuration Resource - terraform-provider-datadog
+        argumentDocs:
+            aggregations: '(Block Set) A list of queryable aggregation combinations for a count, rate, or gauge metric. By default, count and rate metrics require the (time: sum, space: sum) aggregation and gauge metrics require the (time: avg, space: avg) aggregation. Can only be applied to metrics that have a metric_type of count, rate, or gauge. (see below for nested schema)'
+            id: (String) The ID of this resource.
+            include_percentiles: (Boolean) Toggle to include/exclude percentiles for a distribution metric. Defaults to false. Can only be applied to metrics that have a metric_type of distribution.
+            metric_name: (String) The metric name for this resource.
+            metric_type: (String) The metric's type. This field can't be updated after creation. Valid values are gauge, count, rate, distribution.
+            space: (String) A space aggregation for use in query. Valid values are avg, max, min, sum.
+            tags: (Set of String) A list of tag keys that will be queryable for your metric.
+            time: (String) A time aggregation for use in query. Valid values are avg, count, max, min, sum.
+        importStatements: []
+    datadog_monitor Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog monitor resource. This can be used to create and manage Datadog monitors.
+        name: datadog_monitor Resource - terraform-provider-datadog
+        title: datadog_monitor Resource - terraform-provider-datadog
+        argumentDocs:
+            critical: (String) The monitor CRITICAL threshold. Must be a number.
+            critical_recovery: (String) The monitor CRITICAL recovery threshold. Must be a number.
+            enable_logs_sample: (Boolean) A boolean indicating whether or not to include a list of log values which triggered the alert. This is only used by log monitors. Defaults to false.
+            escalation_message: (String) A message to include with a re-notification. Supports the @username notification allowed elsewhere.
+            evaluation_delay: (Number) (Only applies to metric alert) Time (in seconds) to delay evaluation, as a non-negative integer.
+            force_delete: (Boolean) A boolean indicating whether this monitor can be deleted even if it’s referenced by other resources (e.g. SLO, composite monitor).
+            groupby_simple_monitor: (Boolean) Whether or not to trigger one alert if any source breaches a threshold. This is only used by log monitors. Defaults to false.
+            id: (String) The ID of this resource.
+            include_tags: (Boolean) A boolean indicating whether notifications from this monitor automatically insert its triggering tags into the title. Defaults to true.
+            locked: (Boolean, Deprecated) A boolean indicating whether changes to this monitor should be restricted to the creator or admins. Defaults to false. Deprecated. Use restricted_roles.
+            message: (String) A message to include with notifications for this monitor.
+            monitor_threshold_windows: '(Block List, Max: 1) A mapping containing recovery_window and trigger_window values, e.g. last_15m . Can only be used for, and are required for, anomaly monitors. (see below for nested schema)'
+            monitor_thresholds: '(Block List, Max: 1) Alert thresholds of the monitor. (see below for nested schema)'
+            name: (String) Name of Datadog monitor.
+            new_group_delay: (Number) The time (in seconds) to skip evaluations for new groups.
+            new_host_delay: (Number, Deprecated) Deprecated. See new_group_delay. Time (in seconds) to allow a host to boot and applications to fully start before starting the evaluation of monitor results. Should be a non-negative integer. This value is ignored for simple monitors and monitors not grouped by host. Defaults to 300. The only case when this should be used is to override the default and set new_host_delay to zero for monitors grouped by host. Deprecated. Use new_group_delay except when setting new_host_delay to zero.
+            no_data_timeframe: (Number) The number of minutes before a monitor will notify when data stops reporting. Provider defaults to 10 minutes.
+            notify_audit: (Boolean) A boolean indicating whether tagged users will be notified on changes to this monitor. Defaults to false.
+            notify_no_data: (Boolean) A boolean indicating whether this monitor will notify when data stops reporting. Defaults to false.
+            ok: (String) The monitor OK threshold. Must be a number.
+            priority: (Number) Integer from 1 (high) to 5 (low) indicating alert severity.
+            query: (String) The monitor query to notify on. Note this is not the same query you see in the UI and the syntax is different depending on the monitor type, please see the API Reference for details. terraform plan will validate query contents unless validate is set to false.
+            recovery_window: (String) Describes how long an anomalous metric must be normal before the alert recovers.
+            renotify_interval: (Number) The number of minutes after the last notification before a monitor will re-notify on the current status. It will only re-notify if it's not resolved.
+            renotify_occurrences: (Number) The number of re-notification messages that should be sent on the current status.
+            renotify_statuses: (Set of String) The types of statuses for which re-notification messages should be sent. Valid values are alert, warn, no data.
+            require_full_window: (Boolean) A boolean indicating whether this monitor needs a full window of data before it's evaluated.
+            restricted_roles: (Set of String) A list of unique role identifiers to define which roles are allowed to edit the monitor. Editing a monitor includes any updates to the monitor configuration, monitor deletion, and muting of the monitor for any amount of time. Roles unique identifiers can be pulled from the Roles API in the data.id field.
+            tags: '(Set of String) A list of tags to associate with your monitor. This can help you categorize and filter monitors in the manage monitors page of the UI. Note: it''s not currently possible to filter by these tags when querying via the API'
+            timeout_h: (Number) The number of hours of the monitor not reporting data before it automatically resolves from a triggered state. The minimum allowed value is 0 hours. The maximum allowed value is 24 hours.
+            trigger_window: (String) Describes how long a metric must be anomalous before an alert triggers.
+            type: '(String) The type of the monitor. The mapping from these types to the types found in the Datadog Web UI can be found in the Datadog API documentation page. Note: The monitor type cannot be changed after a monitor is created. Valid values are composite, event alert, log alert, metric alert, process alert, query alert, rum alert, service check, synthetics alert, trace-analytics alert, slo alert, event-v2 alert, audit alert, ci-pipelines alert, error-tracking alert.'
+            unknown: (String) The monitor UNKNOWN threshold. Must be a number.
+            validate: (Boolean) If set to false, skip the validation call done during plan.
+            warning: (String) The monitor WARNING threshold. Must be a number.
+            warning_recovery: (String) The monitor WARNING recovery threshold. Must be a number.
+        importStatements:
+            - terraform import datadog_monitor.bytes_received_localhost 2081
+    datadog_monitor_json Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog monitor JSON resource. This can be used to create and manage Datadog monitors using the JSON definition.
+        name: datadog_monitor_json Resource - terraform-provider-datadog
+        title: datadog_monitor_json Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            monitor: (String) The JSON formatted definition of the monitor.
+            url: (String) The URL of the monitor.
+        importStatements:
+            - terraform import datadog_monitor_json.monitor_json 123456
+    datadog_organization_settings Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Organization resource. This can be used to manage your Datadog organization's settings.
+        name: datadog_organization_settings Resource - terraform-provider-datadog
+        title: datadog_organization_settings Resource - terraform-provider-datadog
+        argumentDocs:
+            description: (String) Description of the organization.
+            domains: (List of String) List of domains where the SAML automated user creation is enabled.
+            enabled: (Boolean) Whether or not SAML is enabled for this organization.
+            id: (String) The ID of this resource.
+            name: (String) Name for Organization.
+            private_widget_share: (Boolean) Whether or not the organization users can share widgets outside of Datadog.
+            public_id: (String) The public_id of the organization you are operating within.
+            saml: '(Block List, Min: 1, Max: 1) SAML properties (see below for nested schema)'
+            saml_autocreate_access_role: '(String) The access role of the user. Options are st (standard user), adm (admin user), or ro (read-only user). Allowed enum values: st, adm , ro, ERROR'
+            saml_autocreate_users_domains: '(Block List, Min: 1, Max: 1) List of domains where the SAML automated user creation is enabled. (see below for nested schema)'
+            saml_can_be_enabled: (Boolean) Whether or not SAML can be enabled for this organization.
+            saml_idp_endpoint: (String) Identity provider endpoint for SAML authentication.
+            saml_idp_initiated_login: '(Block List, Min: 1, Max: 1) Whether or not a SAML identity provider metadata file was provided to the Datadog organization. (see below for nested schema)'
+            saml_idp_metadata_uploaded: (Boolean) Whether or not a SAML identity provider metadata file was provided to the Datadog organization.
+            saml_login_url: (String) URL for SAML logging.
+            saml_strict_mode: '(Block List, Min: 1, Max: 1) Whether or not the SAML strict mode is enabled. If true, all users must log in with SAML. (see below for nested schema)'
+            settings: '(Block List, Max: 1) Organization settings (see below for nested schema)'
+        importStatements:
+            - terraform import datadog_organization_settings.organization 11111111-2222-3333-4444-555555555555
+    datadog_role Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog role resource. This can be used to create and manage Datadog roles.
+        name: datadog_role Resource - terraform-provider-datadog
+        title: datadog_role Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            name: (String) Name of the role.
+            permission: (Block Set) Set of objects containing the permission ID and the name of the permissions granted to this role. (see below for nested schema)
+            user_count: (Number) Number of users that have this role.
+        importStatements:
+            - |-
+              # Roles can be imported using their ID, e.g.
+              terraform import datadog_role.example_role 000000-0000-0000-0000-000000000000
+    datadog_security_monitoring_default_rule Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Security Monitoring Rule API resource for default rules.
+        name: datadog_security_monitoring_default_rule Resource - terraform-provider-datadog
+        title: datadog_security_monitoring_default_rule Resource - terraform-provider-datadog
+        argumentDocs:
+            info: ', low, medium, high, critical.'
+            require: ', suppress.'
+        importStatements:
+            - |-
+              # Default rules need to be imported using their ID before applying.
+              resource "datadog_security_monitoring_default_rule" "adefaultrule" {
+              }
+
+              terraform import datadog_security_monitoring_default_rule.adefaultrule m0o-hto-lkb
+    datadog_security_monitoring_filter Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Security Monitoring Rule API resource for security filters.
+        name: datadog_security_monitoring_filter Resource - terraform-provider-datadog
+        title: datadog_security_monitoring_filter Resource - terraform-provider-datadog
+        argumentDocs:
+            exclusion_filter: (Block List) Exclusion filters to exclude some logs from the security filter. (see below for nested schema)
+            filtered_data_type: (String) The filtered data type. Valid values are logs.
+            id: (String) The ID of this resource.
+            is_enabled: (Boolean) Whether the security filter is enabled.
+            name: (String) The name of the security filter.
+            query: (String) The query of the security filter.
+            version: (Number) The version of the security filter.
+        importStatements:
+            - |-
+              # Security monitoring filters can be imported using ID, e.g.
+              terraform import datadog_security_monitoring_filter.my_filter m0o-hto-lkb
+    datadog_security_monitoring_rule Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog Security Monitoring Rule API resource. This can be used to create and manage Datadog security monitoring rules. To change settings for a default rule use datadog_security_default_rule instead.
+        name: datadog_security_monitoring_rule Resource - terraform-provider-datadog
+        title: datadog_security_monitoring_rule Resource - terraform-provider-datadog
+        argumentDocs:
+            '>': ',>=, &&, ||) to determine if a signal should be generated based on the event counts in the previously defined queries.'
+            "0": ', 60, 300, 600, 900, 1800, 3600, 7200.'
+            "1": ', 2, 7, 14, 21, 28.'
+            count: ', cardinality, sum, max, new_value.'
+            "false": .
+            info: ', low, medium, high, critical.'
+            log_detection: ', infrastructure_configuration, workload_security, cloud_configuration.'
+            require: ', suppress.'
+            threshold: ', new_value, anomaly_detection, impossible_travel.'
+        importStatements:
+            - |-
+              # Security monitoring rules can be imported using ID, e.g.
+              terraform import datadog_security_monitoring_rule.my_rule m0o-hto-lkb
+    datadog_service_level_objective Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog service level objective resource. This can be used to create and manage Datadog service level objectives.
+        name: datadog_service_level_objective Resource - terraform-provider-datadog
+        title: datadog_service_level_objective Resource - terraform-provider-datadog
+        argumentDocs:
+            denominator: (String) The sum of the total events.
+            description: (String) A description of this service level objective.
+            force_delete: (Boolean) A boolean indicating whether this monitor can be deleted even if it’s referenced by other resources (e.g. dashboards).
+            groups: (Set of String) A static set of groups to filter monitor-based SLOs
+            id: (String) The ID of this resource.
+            monitor_ids: (Set of Number) A static set of monitor IDs to use as part of the SLO
+            name: (String) Name of Datadog service level objective
+            numerator: (String) The sum of all the good events.
+            query: '(Block List, Max: 1) The metric query of good / total events (see below for nested schema)'
+            tags: '(Set of String) A list of tags to associate with your service level objective. This can help you categorize and filter service level objectives in the service level objectives page of the UI. Note: it''s not currently possible to filter by these tags when querying via the API'
+            target: (Number) The objective's target in[0,100].
+            target_display: (String) A string representation of the target that indicates its precision. It uses trailing zeros to show significant decimal places (e.g. 98.00).
+            thresholds: '(Block List, Min: 1) A list of thresholds and targets that define the service level objectives from the provided SLIs. (see below for nested schema)'
+            timeframe: (String) The time frame for the objective. The mapping from these types to the types found in the Datadog Web UI can be found in the Datadog API documentation page. Valid values are 7d, 30d, 90d, custom.
+            type: (String) The type of the service level objective. The mapping from these types to the types found in the Datadog Web UI can be found in the Datadog API documentation page. Valid values are metric, monitor.
+            validate: (Boolean) Whether or not to validate the SLO.
+            warning: (Number) The objective's warning value in [0,100]. This must be greater than the target value.
+            warning_display: (String) A string representation of the warning target (see the description of the target_display field for details).
+        importStatements:
+            - |-
+              # Service Level Objectives can be imported using their string ID, e.g.
+              terraform import datadog_service_level_objective.baz 12345678901234567890123456789012
+    datadog_slo_correction Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Resource for interacting with the slo_correction API.
+        name: datadog_slo_correction Resource - terraform-provider-datadog
+        title: datadog_slo_correction Resource - terraform-provider-datadog
+        argumentDocs:
+            category: (String) Category the SLO correction belongs to. Valid values are Scheduled Maintenance, Outside Business Hours, Deployment, Other.
+            description: (String) Description of the correction being made.
+            duration: (Number) Length of time in seconds for a specified rrule recurring SLO correction (required if specifying rrule)
+            end: (Number) Ending time of the correction in epoch seconds. Required for one time corrections, but optional if rrule is specified
+            id: (String) The ID of this resource.
+            rrule: (String) Recurrence rules as defined in the iCalendar RFC 5545. Supported rules for SLO corrections are FREQ, INTERVAL, COUNT and UNTIL.
+            slo_id: (String) ID of the SLO that this correction will be applied to.
+            start: (Number) Starting time of the correction in epoch seconds.
+            timezone: (String) The timezone to display in the UI for the correction times (defaults to "UTC")
+        importStatements:
+            - terraform import datadog_slo_correction.testing_slo_correction 11111111-3fee-11eb-8a13-77cd9f15119e
+    datadog_synthetics_global_variable Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog synthetics global variable resource. This can be used to create and manage Datadog synthetics global variables.
+        name: datadog_synthetics_global_variable Resource - terraform-provider-datadog
+        title: datadog_synthetics_global_variable Resource - terraform-provider-datadog
+        argumentDocs:
+            description: (String) Description of the global variable.
+            field: (String) Required when type = http_header. Defines the header to use to extract the value
+            id: (String) The ID of this resource.
+            name: (String) Synthetics global variable name.
+            parse_test_id: (String) Id of the Synthetics test to use for a variable from test.
+            parse_test_options: '(Block List, Max: 1) ID of the Synthetics test to use a source of the global variable value. (see below for nested schema)'
+            parser: '(Block List, Min: 1, Max: 1) (see below for nested schema)'
+            restricted_roles: (Set of String) A list of role identifiers to associate with the Synthetics global variable.
+            secure: (Boolean) If set to true, the value of the global variable is hidden. Defaults to false.
+            tags: (List of String) A list of tags to associate with your synthetics global variable.
+            type: (String) Defines the source to use to extract the value. Valid values are http_body, http_header.
+            value: (String, Sensitive) The value of the global variable.
+        importStatements:
+            - |-
+              # Synthetics global variables can be imported using their string ID, e.g.
+              terraform import datadog_synthetics_global_variable.fizz abcde123-fghi-456-jkl-mnopqrstuv
+    datadog_synthetics_private_location Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog synthetics private location resource. This can be used to create and manage Datadog synthetics private locations.
+        name: datadog_synthetics_private_location Resource - terraform-provider-datadog
+        title: datadog_synthetics_private_location Resource - terraform-provider-datadog
+        argumentDocs:
+            config: (String, Sensitive) Configuration skeleton for the private location. See installation instructions of the private location on how to use this configuration.
+            description: (String) Description of the private location.
+            id: (String) The ID of this resource.
+            metadata: '(Block List, Max: 1) The private location metadata (see below for nested schema)'
+            name: (String) Synthetics private location name.
+            restricted_roles: (Set of String) A list of role identifiers pulled from the Roles API to restrict read and write access.
+            tags: (List of String) A list of tags to associate with your synthetics private location.
+        importStatements:
+            - |-
+              # Synthetics private locations can be imported using their string ID, e.g.
+              terraform import datadog_synthetics_private_location.bar pl:private-location-name-abcdef123456
+    datadog_user Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog user resource. This can be used to create and manage Datadog users.
+        name: datadog_user Resource - terraform-provider-datadog
+        title: datadog_user Resource - terraform-provider-datadog
+        argumentDocs:
+            disabled: (Boolean) Whether the user is disabled.
+            email: (String) Email address for user.
+            id: (String) The ID of this resource.
+            name: (String) Name for user.
+            roles: (Set of String) A list a role IDs to assign to the user.
+            send_user_invitation: (Boolean) Whether an invitation email should be sent when the user is created.
+            user_invitation_id: (String) The ID of the user invitation that was sent when creating the user.
+            verified: (Boolean) Returns true if the user is verified.
+        importStatements:
+            - terraform import datadog_user.example_user 6f1b44c0-30b2-11eb-86bc-279f7c1ebaa4
+    datadog_webhook Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog webhook resource. This can be used to create and manage Datadog webhooks.
+        name: datadog_webhook Resource - terraform-provider-datadog
+        title: datadog_webhook Resource - terraform-provider-datadog
+        argumentDocs:
+            custom_headers: (String) The headers attached to the webhook.
+            encode_as: (String) Encoding type. Valid values are json, form.
+            id: (String) The ID of this resource.
+            name: (String) The name of the webhook. It corresponds with <WEBHOOK_NAME>.
+            payload: (String) The payload of the webhook.
+            url: (String) The URL of the webhook.
+        importStatements:
+            - terraform import datadog_webhook.foo example-webhook
+    datadog_webhook_custom_variable Resource - terraform-provider-datadog:
+        subCategory: ""
+        description: Provides a Datadog webhooks custom variable resource. This can be used to create and manage Datadog webhooks custom variables.
+        name: datadog_webhook_custom_variable Resource - terraform-provider-datadog
+        title: datadog_webhook_custom_variable Resource - terraform-provider-datadog
+        argumentDocs:
+            id: (String) The ID of this resource.
+            is_secret: (Boolean) Whether the custom variable is secret or not.
+            name: (String) The name of the variable. It corresponds with <CUSTOM_VARIABLE_NAME>.
+            value: (String, Sensitive) The value of the custom variable.
+        importStatements:
+            - terraform import datadog_webhook_custom_variable.foo EXAMPLE_VARIABLE
