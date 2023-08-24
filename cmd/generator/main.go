@@ -1,5 +1,3 @@
-//go:build generate
-
 /*
 Copyright 2021 The Crossplane Authors.
 
