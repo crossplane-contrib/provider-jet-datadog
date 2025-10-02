@@ -1,4 +1,14 @@
-# Terrajet Datadog Provider
+# Terrajet Datadog Provider (archived)
+
+> [!WARNING]
+> This project has been archived as per [Crossplane's project
+> governance](https://github.com/crossplane/crossplane/blob/main/GOVERNANCE.md#archival-policy)
+> for community extension projects and is no longer actively maintained.
+>
+> It is recommended to use the
+> [provider-datadog](https://github.com/upbound/provider-datadog)
+> project instead.
+
 
 `provider-jet-datadog` is a [Crossplane](https://crossplane.io/) provider that
 is built using [Terrajet](https://github.com/crossplane/terrajet) code
